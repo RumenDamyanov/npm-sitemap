@@ -1,9 +1,6 @@
 # @rumenx/sitemap
 
-- 📱 **Modern Standards** - Follows latest XML sitemap protocol specifications
-- 🧪 **Battle Tested** - 97%+ test coverage with 376+ test cases
-
-## 💡 Multi-Language Sitemap Familycenter">
+## 💡 Multi-Language Sitemap Familycenter
 
 [![npm version](https://badge.fury.io/js/@rumenx%2Fsitemap.svg)](https://badge.fury.io/js/@rumenx%2Fsitemap)
 [![Node.js CI](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml)
@@ -29,9 +26,9 @@
 - 📱 **Modern Standards** - Follows latest XML sitemap protocol specifications
 - 🧪 **Battle Tested** - 97%+ test coverage with 376+ test cases
 
-## � Inspiration
+## 💡 Inspiration
 
-## 💡 Multi-Language Sitemap Family
+## 📦 Multi-Language Sitemap Family
 
 This package is part of a comprehensive sitemap generation suite created by the same author for multiple programming languages:
 
@@ -55,7 +52,7 @@ All three implementations share the same **core philosophy and feature set**:
 - Enhanced validation with detailed error reporting
 - Zero runtime dependencies for minimal footprint
 
-## �📦 Installation
+## 📦 Installation
 
 ```bash
 # npm

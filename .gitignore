@@ -50,7 +50,7 @@ ehthumbs.db
 Thumbs.db
 
 # Package manager files
-package-lock.json
+# package-lock.json should be committed for reproducible builds
 yarn.lock
 pnpm-lock.yaml
 .yarn/
