@@ -1,0 +1,88 @@
+{
+  "name": "@rumenx/sitemap",
+  "version": "1.0.0",
+  "description": "A comprehensive TypeScript package for generating XML sitemaps in Node.js applications with support for images, videos, translations, and Google News",
+  "keywords": [
+    "sitemap",
+    "xml",
+    "seo",
+    "typescript",
+    "nodejs",
+    "google",
+    "images",
+    "videos",
+    "translations",
+    "news",
+    "hreflang",
+    "search-engine"
+  ],
+  "homepage": "https://github.com/RumenDamyanov/npm-sitemap#readme",
+  "bugs": {
+    "url": "https://github.com/RumenDamyanov/npm-sitemap/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RumenDamyanov/npm-sitemap.git"
+  },
+  "license": "MIT",
+  "author": "Rumen Damyanov <contact@rumenx.com>",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:copy && npm run build:fix-cjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:fix-cjs": "node scripts/fix-cjs.cjs",
+    "build:copy": "cp package.json dist/ && cp README.md dist/ && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json && echo '{\"type\":\"module\"}' > dist/esm/package.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "clean": "rimraf dist coverage",
+    "dev": "tsc --watch",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"*.md\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"*.md\"",
+    "lint": "eslint 'src/**/*.ts' 'tests/**/*.ts' --no-ignore",
+    "lint:fix": "eslint 'src/**/*.ts' 'tests/**/*.ts' --fix --no-ignore",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^27.9.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
