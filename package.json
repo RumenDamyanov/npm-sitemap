@@ -48,7 +48,7 @@
     "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types && npm run build:copy && npm run build:fix-cjs",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:fix-cjs": "node scripts/fix-cjs.cjs",
-    "build:copy": "cp package.json dist/ && cp README.md dist/ && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json && echo '{\"type\":\"module\"}' > dist/esm/package.json",
+    "build:copy": "node scripts/prepare-dist.cjs && cp README.md dist/ && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json && echo '{\"type\":\"module\"}' > dist/esm/package.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:types": "tsc -p tsconfig.types.json",
     "clean": "rimraf dist coverage",

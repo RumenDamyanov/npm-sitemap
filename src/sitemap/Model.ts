@@ -1,15 +1,11 @@
 /**
  * Internal data model for storing sitemap items and configuration
- * 
+ *
  * This class manages the internal storage of sitemap items and sitemap index entries,
  * along with configuration settings like escaping and validation.
  */
 
-import type {
-  SitemapItem,
-  SitemapIndexItem,
-  SitemapConfig,
-} from '../types/SitemapTypes.js';
+import type { SitemapItem, SitemapIndexItem, SitemapConfig } from '../types/SitemapTypes.js';
 import type { IModel } from '../interfaces/index.js';
 
 /**
@@ -35,7 +31,7 @@ export class Model implements IModel {
 
   /**
    * Create a new Model instance
-   * 
+   *
    * @param config - Optional configuration object
    */
   constructor(config: SitemapConfig = {}) {
@@ -44,7 +40,7 @@ export class Model implements IModel {
 
   /**
    * Add a sitemap item to the internal storage
-   * 
+   *
    * @param item - The sitemap item to add
    */
   addItem(item: SitemapItem): void {
@@ -53,7 +49,7 @@ export class Model implements IModel {
 
   /**
    * Get all stored sitemap items
-   * 
+   *
    * @returns Array of sitemap items
    */
   getItems(): SitemapItem[] {
@@ -69,7 +65,7 @@ export class Model implements IModel {
 
   /**
    * Get the configuration
-   * 
+   *
    * @returns Configuration object
    */
   getConfig(): Required<SitemapConfig> {
@@ -78,7 +74,7 @@ export class Model implements IModel {
 
   /**
    * Check if escaping is enabled
-   * 
+   *
    * @returns True if escaping is enabled
    */
   getEscaping(): boolean {
@@ -87,7 +83,7 @@ export class Model implements IModel {
 
   /**
    * Add a sitemap index item
-   * 
+   *
    * @param sitemap - The sitemap index item to add
    */
   addSitemap(sitemap: SitemapIndexItem): void {
@@ -96,7 +92,7 @@ export class Model implements IModel {
 
   /**
    * Get all stored sitemap index items
-   * 
+   *
    * @returns Array of sitemap index items
    */
   getSitemaps(): SitemapIndexItem[] {
@@ -105,7 +101,7 @@ export class Model implements IModel {
 
   /**
    * Reset sitemap index items
-   * 
+   *
    * @param sitemaps - New array of sitemap index items
    */
   resetSitemaps(sitemaps: SitemapIndexItem[]): void {
@@ -114,7 +110,7 @@ export class Model implements IModel {
 
   /**
    * Get the number of items
-   * 
+   *
    * @returns Number of items
    */
   getItemCount(): number {
@@ -123,7 +119,7 @@ export class Model implements IModel {
 
   /**
    * Get the number of sitemap references
-   * 
+   *
    * @returns Number of sitemap references
    */
   getSitemapCount(): number {
@@ -132,7 +128,7 @@ export class Model implements IModel {
 
   /**
    * Check if the sitemap has reached the maximum recommended size
-   * 
+   *
    * @returns True if sitemap should be split
    */
   shouldSplit(): boolean {

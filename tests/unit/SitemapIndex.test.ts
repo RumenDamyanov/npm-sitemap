@@ -33,7 +33,7 @@ describe('SitemapIndex', () => {
     it('should add a simple sitemap URL', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       expect(sitemapIndex.getSitemapCount()).toBe(1);
-      
+
       const sitemaps = sitemapIndex.getSitemaps();
       expect(sitemaps[0].loc).toBe('https://example.com/sitemap1.xml');
     });
@@ -41,20 +41,20 @@ describe('SitemapIndex', () => {
     it('should add sitemap URL with lastmod', () => {
       const lastmod = new Date('2025-01-01');
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml', lastmod);
-      
+
       const sitemaps = sitemapIndex.getSitemaps();
       const sitemap = sitemaps[0];
-      
+
       expect(sitemap.loc).toBe('https://example.com/sitemap1.xml');
       expect(sitemap.lastmod).toBe('2025-01-01T00:00:00.000Z');
     });
 
     it('should add sitemap URL with string lastmod', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml', '2025-01-01');
-      
+
       const sitemaps = sitemapIndex.getSitemaps();
       const sitemap = sitemaps[0];
-      
+
       expect(sitemap.loc).toBe('https://example.com/sitemap1.xml');
       expect(sitemap.lastmod).toBe('2025-01-01');
     });
@@ -67,7 +67,7 @@ describe('SitemapIndex', () => {
     it('should resolve relative URLs with baseUrl', () => {
       const indexWithBase = new SitemapIndex({ baseUrl: 'https://example.com' });
       indexWithBase.addSitemap('/sitemap1.xml');
-      
+
       const sitemaps = indexWithBase.getSitemaps();
       expect(sitemaps[0].loc).toBe('https://example.com/sitemap1.xml');
     });
@@ -75,7 +75,7 @@ describe('SitemapIndex', () => {
     it('should keep absolute URLs unchanged with baseUrl', () => {
       const indexWithBase = new SitemapIndex({ baseUrl: 'https://example.com' });
       indexWithBase.addSitemap('https://other.com/sitemap1.xml');
-      
+
       const sitemaps = indexWithBase.getSitemaps();
       expect(sitemaps[0].loc).toBe('https://other.com/sitemap1.xml');
     });
@@ -97,7 +97,7 @@ describe('SitemapIndex', () => {
       const limitedIndex = new SitemapIndex({ maxSitemaps: 2 });
       limitedIndex.addSitemap('https://example.com/sitemap1.xml');
       limitedIndex.addSitemap('https://example.com/sitemap2.xml');
-      
+
       expect(() => {
         limitedIndex.addSitemap('https://example.com/sitemap3.xml');
       }).toThrow('Maximum number of sitemaps (2) exceeded');
@@ -111,19 +111,17 @@ describe('SitemapIndex', () => {
         { loc: 'https://example.com/sitemap2.xml', lastmod: '2025-01-01' },
         { loc: 'https://example.com/sitemap3.xml' },
       ];
-      
+
       sitemapIndex.addSitemaps(sitemaps);
       expect(sitemapIndex.getSitemapCount()).toBe(3);
-      
+
       const addedSitemaps = sitemapIndex.getSitemaps();
       expect(addedSitemaps[0].loc).toBe('https://example.com/sitemap1.xml');
       expect(addedSitemaps[1].lastmod).toBe('2025-01-01');
     });
 
     it('should return the sitemap index instance for method chaining', () => {
-      const result = sitemapIndex.addSitemaps([
-        { loc: 'https://example.com/sitemap1.xml' }
-      ]);
+      const result = sitemapIndex.addSitemaps([{ loc: 'https://example.com/sitemap1.xml' }]);
       expect(result).toBe(sitemapIndex);
     });
   });
@@ -137,7 +135,7 @@ describe('SitemapIndex', () => {
     it('should return correct sitemaps and count after adding items', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       sitemapIndex.addSitemap('https://example.com/sitemap2.xml');
-      
+
       const sitemaps = sitemapIndex.getSitemaps();
       expect(sitemaps).toHaveLength(2);
       expect(sitemapIndex.getSitemapCount()).toBe(2);
@@ -149,7 +147,7 @@ describe('SitemapIndex', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       const sitemaps1 = sitemapIndex.getSitemaps();
       const sitemaps2 = sitemapIndex.getSitemaps();
-      
+
       expect(sitemaps1).not.toBe(sitemaps2); // Different array instances
       expect(sitemaps1).toEqual(sitemaps2); // Same content
     });
@@ -160,7 +158,7 @@ describe('SitemapIndex', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       sitemapIndex.addSitemap('https://example.com/sitemap2.xml');
       expect(sitemapIndex.getSitemapCount()).toBe(2);
-      
+
       sitemapIndex.clear();
       expect(sitemapIndex.getSitemapCount()).toBe(0);
       expect(sitemapIndex.getSitemaps()).toEqual([]);
@@ -182,7 +180,7 @@ describe('SitemapIndex', () => {
 
     it('should remove sitemaps matching the predicate', () => {
       sitemapIndex.removeSitemaps(item => item.loc.includes('remove'));
-      
+
       expect(sitemapIndex.getSitemapCount()).toBe(2);
       const sitemaps = sitemapIndex.getSitemaps();
       expect(sitemaps[0].loc).toBe('https://example.com/keep1.xml');
@@ -200,16 +198,16 @@ describe('SitemapIndex', () => {
       sitemapIndex.addSitemap('https://example.com/old1.xml');
       sitemapIndex.addSitemap('https://example.com/old2.xml');
       expect(sitemapIndex.getSitemapCount()).toBe(2);
-      
+
       const newSitemaps: SitemapIndexItem[] = [
         { loc: 'https://example.com/new1.xml' },
         { loc: 'https://example.com/new2.xml' },
         { loc: 'https://example.com/new3.xml' },
       ];
-      
+
       sitemapIndex.resetSitemaps(newSitemaps);
       expect(sitemapIndex.getSitemapCount()).toBe(3);
-      
+
       const sitemaps = sitemapIndex.getSitemaps();
       expect(sitemaps[0].loc).toBe('https://example.com/new1.xml');
       expect(sitemaps[1].loc).toBe('https://example.com/new2.xml');
@@ -245,7 +243,7 @@ describe('SitemapIndex', () => {
   describe('getStats method', () => {
     it('should return correct statistics for empty sitemap index', () => {
       const stats = sitemapIndex.getStats();
-      
+
       expect(stats.urls).toBe(0);
       expect(stats.withImages).toBe(0);
       expect(stats.withVideos).toBe(0);
@@ -260,7 +258,7 @@ describe('SitemapIndex', () => {
       sitemapIndex.addSitemap('https://example.com/very-long-sitemap-name-here.xml', '2025-01-02');
 
       const stats = sitemapIndex.getStats();
-      
+
       expect(stats.urls).toBe(3);
       expect(stats.estimatedSize).toBeGreaterThan(200); // Should account for all URLs and dates
     });
@@ -269,7 +267,7 @@ describe('SitemapIndex', () => {
   describe('toXML method', () => {
     it('should generate valid XML for empty sitemap index', () => {
       const xml = sitemapIndex.toXML();
-      
+
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(xml).toContain('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
       expect(xml).toContain('</sitemapindex>');
@@ -278,9 +276,9 @@ describe('SitemapIndex', () => {
     it('should generate XML with sitemap entries', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       sitemapIndex.addSitemap('https://example.com/sitemap2.xml', '2025-01-01');
-      
+
       const xml = sitemapIndex.toXML();
-      
+
       expect(xml).toContain('<sitemap>');
       expect(xml).toContain('<loc>https://example.com/sitemap1.xml</loc>');
       expect(xml).toContain('<loc>https://example.com/sitemap2.xml</loc>');
@@ -291,7 +289,7 @@ describe('SitemapIndex', () => {
     it('should generate pretty-formatted XML by default', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       const xml = sitemapIndex.toXML();
-      
+
       // Check for indentation
       expect(xml).toContain('<sitemap>');
       expect(xml).toContain('  <loc>');
@@ -301,7 +299,7 @@ describe('SitemapIndex', () => {
       const compactIndex = new SitemapIndex({ pretty: false });
       compactIndex.addSitemap('https://example.com/sitemap1.xml');
       const xml = compactIndex.toXML();
-      
+
       // Should not have extra indentation
       expect(xml).toContain('<sitemap>');
       expect(xml).not.toContain('  <sitemap>');
@@ -309,13 +307,15 @@ describe('SitemapIndex', () => {
 
     it('should include stylesheet when configured', () => {
       const xml = sitemapIndex.toXML({ stylesheet: 'https://example.com/style.xsl' });
-      expect(xml).toContain('<?xml-stylesheet href="https://example.com/style.xsl" type="text/xsl"?>');
+      expect(xml).toContain(
+        '<?xml-stylesheet href="https://example.com/style.xsl" type="text/xsl"?>'
+      );
     });
 
     it('should escape XML characters in URLs', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap?param=value&other=test');
       const xml = sitemapIndex.toXML();
-      
+
       expect(xml).toContain('&amp;');
       expect(xml).not.toContain('https://example.com/sitemap?param=value&other=test');
     });
@@ -324,7 +324,7 @@ describe('SitemapIndex', () => {
       const noEscapeIndex = new SitemapIndex({ escaping: false });
       noEscapeIndex.addSitemap('https://example.com/sitemap?param=value&other=test');
       const xml = noEscapeIndex.toXML();
-      
+
       expect(xml).toContain('https://example.com/sitemap?param=value&other=test');
       expect(xml).not.toContain('&amp;');
     });
@@ -335,14 +335,14 @@ describe('SitemapIndex', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       const rendered = sitemapIndex.render();
       const xml = sitemapIndex.toXML();
-      
+
       expect(rendered).toBe(xml);
     });
 
     it('should pass options to toXML', () => {
       sitemapIndex.addSitemap('https://example.com/sitemap1.xml');
       const rendered = sitemapIndex.render({ pretty: false });
-      
+
       expect(rendered).toContain('<sitemap>');
       expect(rendered).not.toContain('  <sitemap>');
     });
@@ -393,7 +393,7 @@ describe('SitemapIndex', () => {
       expect(config).toHaveProperty('escaping');
       expect(config).toHaveProperty('pretty');
       expect(config).toHaveProperty('maxSitemaps');
-      
+
       // Should be a copy, not the original
       config.validate = !config.validate;
       expect(sitemapIndex.getConfig().validate).not.toBe(config.validate);
@@ -403,12 +403,12 @@ describe('SitemapIndex', () => {
   describe('setConfig method', () => {
     it('should update configuration', () => {
       const originalConfig = sitemapIndex.getConfig();
-      
-      sitemapIndex.setConfig({ 
+
+      sitemapIndex.setConfig({
         validate: !originalConfig.validate,
-        pretty: !originalConfig.pretty 
+        pretty: !originalConfig.pretty,
       });
-      
+
       const newConfig = sitemapIndex.getConfig();
       expect(newConfig.validate).toBe(!originalConfig.validate);
       expect(newConfig.pretty).toBe(!originalConfig.pretty);

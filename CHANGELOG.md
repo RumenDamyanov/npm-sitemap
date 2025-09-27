@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial implementation of comprehensive TypeScript sitemap package
 - Full support for XML sitemap generation with images, videos, translations, and Google News
 - SitemapIndex class for managing multiple sitemap files
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dependabot configuration for automated dependency updates
 
 ### Features
+
 - Modern ESM/CJS dual package support
 - Zero runtime dependencies
 - Tree-shakable imports
@@ -33,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-09-27
 
 ### Added
+
 - Initial release of @rumenx/sitemap package
 - Complete TypeScript implementation
 - Full XML Sitemap Protocol support
@@ -41,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Professional-grade test coverage
 
 ### Technical Details
+
 - Node.js >= 18.0.0 support
 - TypeScript 5.4.2 compatibility
 - Jest testing framework with 376+ test cases

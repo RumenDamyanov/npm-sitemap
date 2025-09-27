@@ -1,6 +1,6 @@
 /**
  * Main Sitemap class for generating XML sitemaps
- * 
+ *
  * This is the primary interface for creating and managing sitemap entries
  * with support for images, videos, translations, and other rich content.
  */
@@ -31,7 +31,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Create a new Sitemap instance
-   * 
+   *
    * @param config - Optional configuration object
    */
   constructor(config: SitemapConfig = {}) {
@@ -41,7 +41,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Add a single sitemap item using explicit parameters
-   * 
+   *
    * @param url - The URL of the page
    * @param lastmod - Last modification date (optional)
    * @param priority - Priority of this URL (0.0 to 1.0, optional)
@@ -57,7 +57,7 @@ export class Sitemap implements ISitemap {
     options: SitemapAddOptions = {}
   ): this {
     const config = this.model.getConfig();
-    
+
     // Normalize and resolve URL
     let normalizedUrl = normalizeUrl(url);
     if (config.baseUrl && !this.validator.isValidUrl(normalizedUrl)) {
@@ -98,7 +98,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Add one or more sitemap items using object/array data
-   * 
+   *
    * @param items - Single item or array of items to add
    * @returns This sitemap instance for chaining
    */
@@ -141,7 +141,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Get all sitemap items
-   * 
+   *
    * @returns Array of all sitemap items
    */
   getItems(): SitemapItem[] {
@@ -150,7 +150,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Get the number of items in the sitemap
-   * 
+   *
    * @returns Number of items
    */
   getItemCount(): number {
@@ -159,7 +159,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Clear all items from the sitemap
-   * 
+   *
    * @returns This sitemap instance for chaining
    */
   clear(): this {
@@ -169,29 +169,29 @@ export class Sitemap implements ISitemap {
 
   /**
    * Remove items that match the given predicate function
-   * 
+   *
    * @param predicate - Function to test each item
    * @returns This sitemap instance for chaining
    */
   removeItems(predicate: (item: SitemapItem) => boolean): this {
     const items = this.model.getItems();
     const filteredItems = items.filter(item => !predicate(item));
-    
+
     // Clear and re-add filtered items
     this.model.clear();
     filteredItems.forEach(item => this.model.addItem(item));
-    
+
     return this;
   }
 
   /**
    * Get statistics about the sitemap
-   * 
+   *
    * @returns Statistics object
    */
   getStats(): SitemapStats {
     const items = this.model.getItems();
-    
+
     const stats: SitemapStats = {
       urls: items.length,
       withImages: 0,
@@ -209,20 +209,20 @@ export class Sitemap implements ISitemap {
         stats.withImages++;
         stats.totalImages += item.images.length;
       }
-      
+
       if (item.videos && item.videos.length > 0) {
         stats.withVideos++;
         stats.totalVideos += item.videos.length;
       }
-      
+
       if (item.translations && item.translations.length > 0) {
         stats.withTranslations++;
       }
-      
+
       if (item.alternates && item.alternates.length > 0) {
         stats.withAlternates++;
       }
-      
+
       if (item.googlenews) {
         stats.withGoogleNews++;
       }
@@ -248,7 +248,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Render the sitemap in the specified format
-   * 
+   *
    * @param format - Output format (default: 'xml')
    * @param options - Rendering options
    * @returns Rendered sitemap as string
@@ -257,40 +257,40 @@ export class Sitemap implements ISitemap {
     if (format !== 'xml') {
       throw new Error(`Format '${format}' not yet implemented. Currently only 'xml' is supported.`);
     }
-    
+
     return this.toXML(options);
   }
 
   /**
    * Render the sitemap as XML (convenience method)
-   * 
+   *
    * @param options - Rendering options
    * @returns XML string
    */
   toXML(options: RenderOptions = {}): string {
     const items = this.model.getItems();
     const config = this.model.getConfig();
-    
+
     // Merge options with config
     const pretty = options.pretty ?? config.pretty;
     const stylesheet = options.stylesheet ?? config.stylesheet;
-    
+
     // Generate XML
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    
+
     if (stylesheet) {
       xml += `<?xml-stylesheet href="${this.escapeXml(stylesheet)}" type="text/xsl"?>\n`;
     }
-    
+
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
-    
+
     // Add namespaces based on content
     const hasImages = items.some(item => item.images && item.images.length > 0);
     const hasVideos = items.some(item => item.videos && item.videos.length > 0);
     const hasTranslations = items.some(item => item.translations && item.translations.length > 0);
     const hasAlternates = items.some(item => item.alternates && item.alternates.length > 0);
     const hasGoogleNews = items.some(item => item.googlenews);
-    
+
     if (hasImages) {
       xml += ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"';
     }
@@ -303,22 +303,22 @@ export class Sitemap implements ISitemap {
     if (hasGoogleNews) {
       xml += ' xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"';
     }
-    
+
     xml += '>\n';
-    
+
     // Add items
     for (const item of items) {
       xml += this.renderSitemapItem(item, pretty ? 1 : 0);
     }
-    
+
     xml += '</urlset>';
-    
+
     return xml;
   }
 
   /**
    * Render the sitemap as plain text (convenience method)
-   * 
+   *
    * @returns Text string with URLs
    */
   toTXT(): string {
@@ -328,7 +328,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Render the sitemap as HTML (convenience method)
-   * 
+   *
    * @returns HTML string
    */
   toHTML(): string {
@@ -337,27 +337,29 @@ export class Sitemap implements ISitemap {
 
   /**
    * Validate all items in the sitemap
-   * 
+   *
    * @returns Array of validation errors (empty if valid)
    */
   validate(): ValidationError[] {
     const items = this.model.getItems();
     const errors: ValidationError[] = [];
-    
+
     items.forEach((item, index) => {
       const itemErrors = this.validator.validateItem(item);
-      errors.push(...itemErrors.map(error => ({
-        ...error,
-        field: `item[${index}].${error.field}`,
-      })));
+      errors.push(
+        ...itemErrors.map(error => ({
+          ...error,
+          field: `item[${index}].${error.field}`,
+        }))
+      );
     });
-    
+
     return errors;
   }
 
   /**
    * Check if the sitemap has reached the maximum recommended size
-   * 
+   *
    * @returns True if sitemap should be split
    */
   shouldSplit(): boolean {
@@ -366,7 +368,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Render a single sitemap item as XML
-   * 
+   *
    * @param item - Sitemap item to render
    * @param indent - Indentation level
    * @returns XML string for the item
@@ -374,23 +376,23 @@ export class Sitemap implements ISitemap {
   private renderSitemapItem(item: SitemapItem, indent = 0): string {
     const indentStr = '  '.repeat(indent);
     let xml = `${indentStr}<url>\n`;
-    
+
     // Required URL
     xml += `${indentStr}  <loc>${this.escapeXml(item.loc)}</loc>\n`;
-    
+
     // Optional fields
     if (item.lastmod) {
       xml += `${indentStr}  <lastmod>${item.lastmod}</lastmod>\n`;
     }
-    
+
     if (item.changefreq) {
       xml += `${indentStr}  <changefreq>${item.changefreq}</changefreq>\n`;
     }
-    
+
     if (item.priority !== undefined) {
       xml += `${indentStr}  <priority>${item.priority}</priority>\n`;
     }
-    
+
     // Images
     if (item.images) {
       for (const image of item.images) {
@@ -405,7 +407,7 @@ export class Sitemap implements ISitemap {
         xml += `${indentStr}  </image:image>\n`;
       }
     }
-    
+
     // Videos
     if (item.videos) {
       for (const video of item.videos) {
@@ -413,22 +415,22 @@ export class Sitemap implements ISitemap {
         xml += `${indentStr}    <video:thumbnail_loc>${this.escapeXml(video.thumbnail_url)}</video:thumbnail_loc>\n`;
         xml += `${indentStr}    <video:title><![CDATA[${video.title}]]></video:title>\n`;
         xml += `${indentStr}    <video:description><![CDATA[${video.description}]]></video:description>\n`;
-        
+
         if (video.duration !== undefined) {
           xml += `${indentStr}    <video:duration>${video.duration}</video:duration>\n`;
         }
-        
+
         xml += `${indentStr}  </video:video>\n`;
       }
     }
-    
+
     // Translations (hreflang)
     if (item.translations) {
       for (const trans of item.translations) {
         xml += `${indentStr}  <xhtml:link rel="alternate" hreflang="${trans.language}" href="${this.escapeXml(trans.url)}" />\n`;
       }
     }
-    
+
     // Alternates
     if (item.alternates) {
       for (const alt of item.alternates) {
@@ -436,7 +438,7 @@ export class Sitemap implements ISitemap {
         xml += `${indentStr}  <xhtml:link rel="alternate"${media} href="${this.escapeXml(alt.url)}" />\n`;
       }
     }
-    
+
     // Google News
     if (item.googlenews) {
       xml += `${indentStr}  <news:news>\n`;
@@ -450,14 +452,14 @@ export class Sitemap implements ISitemap {
       }
       xml += `${indentStr}  </news:news>\n`;
     }
-    
+
     xml += `${indentStr}</url>\n`;
     return xml;
   }
 
   /**
    * Escape XML special characters
-   * 
+   *
    * @param text - Text to escape
    * @returns Escaped text
    */
@@ -466,7 +468,7 @@ export class Sitemap implements ISitemap {
     if (!config.escaping) {
       return text;
     }
-    
+
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -477,7 +479,7 @@ export class Sitemap implements ISitemap {
 
   /**
    * Format date for XML output
-   * 
+   *
    * @param date - Date to format
    * @returns Formatted date string
    */

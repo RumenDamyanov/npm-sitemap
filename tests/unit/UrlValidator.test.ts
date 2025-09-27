@@ -9,7 +9,7 @@ import {
   isDomainAllowed,
   extractDomain,
   hasValidWebExtension,
-  resolveUrl
+  resolveUrl,
 } from '../../src/validators/UrlValidator.js';
 
 describe('UrlValidator', () => {
@@ -107,7 +107,7 @@ describe('UrlValidator', () => {
     it('should handle very long URLs', () => {
       const longPath = 'a'.repeat(2100); // Exceeds the 2048 limit
       const longUrl = `https://example.com/${longPath}`;
-      
+
       // Should reject URLs that are too long
       expect(isValidUrl(longUrl)).toBe(false);
     });
@@ -155,13 +155,19 @@ describe('UrlValidator', () => {
     });
 
     it('should preserve query parameters', () => {
-      expect(normalizeUrl('https://example.com?param=value')).toBe('https://example.com/?param=value');
-      expect(normalizeUrl('https://example.com/path?param=value')).toBe('https://example.com/path?param=value');
+      expect(normalizeUrl('https://example.com?param=value')).toBe(
+        'https://example.com/?param=value'
+      );
+      expect(normalizeUrl('https://example.com/path?param=value')).toBe(
+        'https://example.com/path?param=value'
+      );
     });
 
     it('should handle paths correctly', () => {
       expect(normalizeUrl('https://example.com/path')).toBe('https://example.com/path');
-      expect(normalizeUrl('https://example.com/path/to/resource')).toBe('https://example.com/path/to/resource');
+      expect(normalizeUrl('https://example.com/path/to/resource')).toBe(
+        'https://example.com/path/to/resource'
+      );
     });
 
     it('should return invalid URLs unchanged', () => {
@@ -302,7 +308,7 @@ describe('UrlValidator', () => {
     it('should return absolute URLs unchanged', () => {
       const absoluteUrl = 'https://other.com/path';
       expect(resolveUrl(absoluteUrl, 'https://example.com')).toBe(absoluteUrl);
-      
+
       const httpUrl = 'http://other.com/path';
       expect(resolveUrl(httpUrl, 'https://example.com')).toBe(httpUrl);
     });
@@ -323,7 +329,9 @@ describe('UrlValidator', () => {
 
     it('should resolve query-only URLs', () => {
       const baseUrl = 'https://example.com/path/to/page';
-      expect(resolveUrl('?query=value', baseUrl)).toBe('https://example.com/path/to/page?query=value');
+      expect(resolveUrl('?query=value', baseUrl)).toBe(
+        'https://example.com/path/to/page?query=value'
+      );
     });
 
     it('should resolve fragment-only URLs', () => {
@@ -334,7 +342,7 @@ describe('UrlValidator', () => {
     it('should handle protocol-relative URLs', () => {
       const baseUrl = 'https://example.com/path';
       expect(resolveUrl('//other.com/path', baseUrl)).toBe('https://other.com/path');
-      
+
       const httpBase = 'http://example.com/path';
       expect(resolveUrl('//other.com/path', httpBase)).toBe('http://other.com/path');
     });
@@ -359,7 +367,7 @@ describe('UrlValidator', () => {
     it('should handle base URLs with query parameters and fragments', () => {
       const baseWithQuery = 'https://example.com/path?param=value';
       expect(resolveUrl('relative', baseWithQuery)).toBe('https://example.com/relative');
-      
+
       const baseWithFragment = 'https://example.com/path#section';
       expect(resolveUrl('relative', baseWithFragment)).toBe('https://example.com/relative');
     });
@@ -367,12 +375,12 @@ describe('UrlValidator', () => {
 
   describe('URL length validation', () => {
     it('should reject very long URLs', () => {
-      const longUrl = `https://example.com/${  'a'.repeat(2048)}`;
+      const longUrl = `https://example.com/${'a'.repeat(2048)}`;
       expect(isValidUrl(longUrl)).toBe(false);
     });
 
     it('should accept URLs at the length limit', () => {
-      const maxLengthUrl = `https://example.com/${  'a'.repeat(2020)}`; // Total ~2044 chars
+      const maxLengthUrl = `https://example.com/${'a'.repeat(2020)}`; // Total ~2044 chars
       expect(isValidUrl(maxLengthUrl)).toBe(true);
     });
   });
@@ -506,9 +514,9 @@ describe('UrlValidator', () => {
         static parse = originalURL.parse;
         static revokeObjectURL = originalURL.revokeObjectURL;
       };
-      
+
       expect(isAccessibleUrl('http://malformed-for-test')).toBe(false);
-      
+
       // Restore original URL constructor
       global.URL = originalURL;
     });
@@ -530,10 +538,10 @@ describe('UrlValidator', () => {
         static parse = originalURL.parse;
         static revokeObjectURL = originalURL.revokeObjectURL;
       };
-      
+
       // This should return the original URL when parsing fails
       expect(normalizeUrl('http://valid.com')).toBe('http://valid.com');
-      
+
       // Restore original URL constructor
       global.URL = originalURL;
     });
@@ -552,9 +560,9 @@ describe('UrlValidator', () => {
         static parse = originalURL.parse;
         static revokeObjectURL = originalURL.revokeObjectURL;
       };
-      
+
       expect(isDomainAllowed('http://error-test.com', ['test.com'])).toBe(false);
-      
+
       global.URL = originalURL;
     });
 
@@ -572,9 +580,9 @@ describe('UrlValidator', () => {
         static parse = originalURL.parse;
         static revokeObjectURL = originalURL.revokeObjectURL;
       };
-      
+
       expect(extractDomain('http://extract-error.com')).toBe(null);
-      
+
       global.URL = originalURL;
     });
 
@@ -592,9 +600,9 @@ describe('UrlValidator', () => {
         static parse = originalURL.parse;
         static revokeObjectURL = originalURL.revokeObjectURL;
       };
-      
+
       expect(hasValidWebExtension('http://extension-error.com/file.html')).toBe(false);
-      
+
       global.URL = originalURL;
     });
   });

@@ -1,6 +1,6 @@
 /**
  * Main type definitions export for @rumenx/sitemap
- * 
+ *
  * This file re-exports all public types used by the package.
  */
 

@@ -10,7 +10,7 @@ import {
   createElement,
   createElementWithChildren,
   formatXml,
-  createNamespaceDeclarations
+  createNamespaceDeclarations,
 } from '../../src/utils/XmlUtils.js';
 
 describe('XmlUtils', () => {
@@ -59,7 +59,7 @@ describe('XmlUtils', () => {
     it('should handle control characters if present', () => {
       const withTabs = 'Line1\tTab\tSeparated';
       const withNewlines = 'Line1\nLine2\nLine3';
-      
+
       // Should preserve valid whitespace characters
       expect(escapeXml(withTabs)).toContain('\t');
       expect(escapeXml(withNewlines)).toContain('\n');
@@ -69,7 +69,9 @@ describe('XmlUtils', () => {
   describe('wrapCDATA function', () => {
     it('should wrap content with problematic characters in CDATA', () => {
       expect(wrapCDATA('Tom & Jerry')).toBe('<![CDATA[Tom & Jerry]]>');
-      expect(wrapCDATA('<script>alert("hi")</script>')).toBe('<![CDATA[<script>alert("hi")</script>]]>');
+      expect(wrapCDATA('<script>alert("hi")</script>')).toBe(
+        '<![CDATA[<script>alert("hi")</script>]]>'
+      );
       expect(wrapCDATA('Line1\nLine2')).toBe('<![CDATA[Line1\nLine2]]>');
     });
 
@@ -114,7 +116,9 @@ describe('XmlUtils', () => {
     });
 
     it('should handle custom encoding', () => {
-      expect(xmlDeclaration('1.0', 'ISO-8859-1')).toBe('<?xml version="1.0" encoding="ISO-8859-1"?>');
+      expect(xmlDeclaration('1.0', 'ISO-8859-1')).toBe(
+        '<?xml version="1.0" encoding="ISO-8859-1"?>'
+      );
     });
 
     it('should handle both custom version and encoding', () => {
@@ -124,21 +128,27 @@ describe('XmlUtils', () => {
 
   describe('xmlStylesheet function', () => {
     it('should create stylesheet processing instruction', () => {
-      expect(xmlStylesheet('styles.xsl')).toBe('<?xml-stylesheet href="styles.xsl" type="text/xsl"?>');
+      expect(xmlStylesheet('styles.xsl')).toBe(
+        '<?xml-stylesheet href="styles.xsl" type="text/xsl"?>'
+      );
     });
 
     it('should handle custom type', () => {
-      expect(xmlStylesheet('styles.css', 'text/css')).toBe('<?xml-stylesheet href="styles.css" type="text/css"?>');
+      expect(xmlStylesheet('styles.css', 'text/css')).toBe(
+        '<?xml-stylesheet href="styles.css" type="text/css"?>'
+      );
     });
 
     it('should escape href URLs', () => {
-      expect(xmlStylesheet('styles.xsl?version=1&debug=true'))
-        .toBe('<?xml-stylesheet href="styles.xsl?version=1&amp;debug=true" type="text/xsl"?>');
+      expect(xmlStylesheet('styles.xsl?version=1&debug=true')).toBe(
+        '<?xml-stylesheet href="styles.xsl?version=1&amp;debug=true" type="text/xsl"?>'
+      );
     });
 
     it('should handle URLs with quotes', () => {
-      expect(xmlStylesheet('path/with"quotes.xsl'))
-        .toBe('<?xml-stylesheet href="path/with&quot;quotes.xsl" type="text/xsl"?>');
+      expect(xmlStylesheet('path/with"quotes.xsl')).toBe(
+        '<?xml-stylesheet href="path/with&quot;quotes.xsl" type="text/xsl"?>'
+      );
     });
   });
 
@@ -150,8 +160,9 @@ describe('XmlUtils', () => {
 
     it('should escape content automatically', () => {
       expect(createElement('title', 'Tom & Jerry')).toBe('<title>Tom &amp; Jerry</title>');
-      expect(createElement('desc', '<script>alert("hi")</script>'))
-        .toBe('<desc>&lt;script&gt;alert(&quot;hi&quot;)&lt;/script&gt;</desc>');
+      expect(createElement('desc', '<script>alert("hi")</script>')).toBe(
+        '<desc>&lt;script&gt;alert(&quot;hi&quot;)&lt;/script&gt;</desc>'
+      );
     });
 
     it('should handle empty content with self-closing tags', () => {
@@ -162,19 +173,23 @@ describe('XmlUtils', () => {
 
     it('should handle attributes', () => {
       const attrs = { id: '123', class: 'important' };
-      expect(createElement('div', 'content', attrs)).toBe('<div id="123" class="important">content</div>');
+      expect(createElement('div', 'content', attrs)).toBe(
+        '<div id="123" class="important">content</div>'
+      );
     });
 
     it('should escape attribute values', () => {
       const attrs = { title: 'Tom & Jerry', alt: 'Say "Hello"' };
-      expect(createElement('img', 'content', attrs))
-        .toBe('<img title="Tom &amp; Jerry" alt="Say &quot;Hello&quot;">content</img>');
+      expect(createElement('img', 'content', attrs)).toBe(
+        '<img title="Tom &amp; Jerry" alt="Say &quot;Hello&quot;">content</img>'
+      );
     });
 
     it('should handle self-closing elements with attributes', () => {
       expect(createElement('br', '', { class: 'break' })).toBe('<br class="break" />');
-      expect(createElement('img', undefined, { src: 'test.jpg', alt: 'Test' }))
-        .toBe('<img src="test.jpg" alt="Test" />');
+      expect(createElement('img', undefined, { src: 'test.jpg', alt: 'Test' })).toBe(
+        '<img src="test.jpg" alt="Test" />'
+      );
     });
 
     it('should handle indentation', () => {
@@ -186,7 +201,7 @@ describe('XmlUtils', () => {
     it('should handle complex scenarios', () => {
       const content = 'Price: $5 < $10 & more';
       const attrs = { 'data-value': '"quoted"', 'data-url': 'http://example.com?a=1&b=2' };
-      
+
       const result = createElement('price', content, attrs);
       expect(result).toContain('&lt;');
       expect(result).toContain('&amp;');
@@ -198,10 +213,7 @@ describe('XmlUtils', () => {
 
   describe('createElementWithChildren function', () => {
     it('should create elements with child elements', () => {
-      const children = [
-        '  <name>John</name>',
-        '  <age>30</age>',
-      ];
+      const children = ['  <name>John</name>', '  <age>30</age>'];
       const result = createElementWithChildren('person', children);
       const expected = '<person>\n  <name>John</name>\n  <age>30</age>\n</person>';
       expect(result).toBe(expected);
@@ -247,7 +259,7 @@ describe('XmlUtils', () => {
       ];
       const attrs = { xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' };
       const result = createElementWithChildren('urlset', children, attrs);
-      
+
       expect(result).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
       expect(result).toContain('<loc>https://example.com/</loc>');
       expect(result).toContain('<lastmod>2025-01-15</lastmod>');
@@ -304,8 +316,8 @@ describe('XmlUtils', () => {
   describe('createNamespaceDeclarations function', () => {
     it('should create namespace declarations', () => {
       const namespaces = {
-        'default': 'http://www.sitemaps.org/schemas/sitemap/0.9',
-        'image': 'http://www.google.com/schemas/sitemap-image/1.1',
+        default: 'http://www.sitemaps.org/schemas/sitemap/0.9',
+        image: 'http://www.google.com/schemas/sitemap-image/1.1',
       };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
@@ -313,13 +325,13 @@ describe('XmlUtils', () => {
     });
 
     it('should handle single namespace', () => {
-      const namespaces = { 'default': 'http://example.com/ns' };
+      const namespaces = { default: 'http://example.com/ns' };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toBe(' xmlns="http://example.com/ns"');
     });
 
     it('should handle sitemap namespace as default', () => {
-      const namespaces = { 'sitemap': 'http://www.sitemaps.org/schemas/sitemap/0.9' };
+      const namespaces = { sitemap: 'http://www.sitemaps.org/schemas/sitemap/0.9' };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toBe(' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     });
@@ -329,7 +341,7 @@ describe('XmlUtils', () => {
     });
 
     it('should escape namespace URIs', () => {
-      const namespaces = { 'test': 'http://example.com/ns?version=1&debug=true' };
+      const namespaces = { test: 'http://example.com/ns?version=1&debug=true' };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toContain('&amp;');
       expect(result).toContain('xmlns:test=');
@@ -337,9 +349,9 @@ describe('XmlUtils', () => {
 
     it('should handle multiple custom namespaces', () => {
       const namespaces = {
-        'image': 'http://www.google.com/schemas/sitemap-image/1.1',
-        'video': 'http://www.google.com/schemas/sitemap-video/1.1',
-        'news': 'http://www.google.com/schemas/sitemap-news/0.9',
+        image: 'http://www.google.com/schemas/sitemap-image/1.1',
+        video: 'http://www.google.com/schemas/sitemap-video/1.1',
+        news: 'http://www.google.com/schemas/sitemap-news/0.9',
       };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toContain('xmlns:image=');
@@ -348,7 +360,7 @@ describe('XmlUtils', () => {
     });
 
     it('should handle namespace URIs with quotes', () => {
-      const namespaces = { 'test': 'http://example.com/ns"with"quotes' };
+      const namespaces = { test: 'http://example.com/ns"with"quotes' };
       const result = createNamespaceDeclarations(namespaces);
       expect(result).toContain('&quot;');
     });
@@ -360,20 +372,27 @@ describe('XmlUtils', () => {
         { loc: 'https://example.com/', lastmod: '2025-01-15', priority: '1.0' },
         { loc: 'https://example.com/about', lastmod: '2025-01-14', priority: '0.8' },
       ];
-      
+
       // Create individual URL elements properly
       const urlElements = urls.map(url => {
         const locElement = createElement('loc', url.loc, {}, 2);
         const lastmodElement = createElement('lastmod', url.lastmod, {}, 2);
         const priorityElement = createElement('priority', url.priority, {}, 2);
-        
-        return createElementWithChildren('url', [locElement, lastmodElement, priorityElement], {}, 1);
+
+        return createElementWithChildren(
+          'url',
+          [locElement, lastmodElement, priorityElement],
+          {},
+          1
+        );
       });
-      
-      const urlset = createElementWithChildren('urlset', urlElements, { xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' });
-      
-      const fullXml = `${xmlDeclaration()  }\n${  urlset}`;
-      
+
+      const urlset = createElementWithChildren('urlset', urlElements, {
+        xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
+      });
+
+      const fullXml = `${xmlDeclaration()}\n${urlset}`;
+
       expect(fullXml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(fullXml).toContain('<urlset');
       expect(fullXml).toContain('https://example.com/');
@@ -392,7 +411,7 @@ describe('XmlUtils', () => {
       const problematicContent = '<script>alert("Hello & Goodbye");</script>';
       const cdata = wrapCDATA(problematicContent);
       const element = createElement('content', problematicContent);
-      
+
       expect(cdata).toContain('<![CDATA[');
       expect(element).toContain('&lt;script&gt;');
     });
@@ -408,21 +427,21 @@ describe('XmlUtils', () => {
         'Unicode: Café, 日本語, 🎉',
         'Numbers and symbols: 123 + 456 = 579 @ #$%',
       ];
-      
+
       for (const str of testStrings) {
         const escaped = escapeXml(str);
         const element = createElement('test', str);
         const cdata = wrapCDATA(str);
         expect(element).toBeDefined();
         expect(cdata).toBeDefined();
-        
+
         // Should not contain unescaped special characters after escaping
         if (str.includes('<')) expect(escaped).not.toContain('<');
         if (str.includes('>')) expect(escaped).not.toContain('>');
         if (str.includes('&')) expect(escaped).toContain('&amp;');
         if (str.includes('"')) expect(escaped).toContain('&quot;');
         if (str.includes("'")) expect(escaped).toContain('&#39;');
-        
+
         // Element should contain escaped content
         expect(element).toContain(escaped);
       }
@@ -433,11 +452,11 @@ describe('XmlUtils', () => {
       // escapeXml expects string input, so null/undefined should throw
       expect(() => escapeXml(null as any)).toThrow();
       expect(() => escapeXml(undefined as any)).toThrow();
-      
+
       // createElement with null content calls escapeXml which doesn't handle null
       expect(() => createElement('test', null as any)).toThrow();
       expect(() => wrapCDATA(null as any)).toThrow();
-      
+
       // Should handle empty or minimal inputs
       expect(escapeXml('')).toBe('');
       expect(createElement('test')).toBe('<test />');
@@ -454,7 +473,7 @@ describe('XmlUtils', () => {
     it('should format XML declarations and stylesheets correctly', () => {
       const declaration = xmlDeclaration();
       const stylesheet = xmlStylesheet('sitemap.xsl');
-      
+
       expect(declaration).toMatch(/^\<\?xml/);
       expect(declaration).toMatch(/\?\>$/);
       expect(stylesheet).toMatch(/^\<\?xml-stylesheet/);

@@ -1,12 +1,12 @@
 /**
  * XML utility functions for sitemap generation
- * 
+ *
  * This module provides utilities for XML generation, escaping, and formatting.
  */
 
 /**
  * Escape special XML characters in text content
- * 
+ *
  * @param text - Text to escape
  * @returns Escaped text safe for XML
  */
@@ -21,7 +21,7 @@ export function escapeXml(text: string): string {
 
 /**
  * Wrap text in CDATA section if it contains problematic characters
- * 
+ *
  * @param text - Text to potentially wrap
  * @returns CDATA wrapped text or original text
  */
@@ -37,7 +37,7 @@ export function wrapCDATA(text: string): string {
 
 /**
  * Generate XML declaration
- * 
+ *
  * @param version - XML version (default: '1.0')
  * @param encoding - Character encoding (default: 'UTF-8')
  * @returns XML declaration string
@@ -48,7 +48,7 @@ export function xmlDeclaration(version = '1.0', encoding = 'UTF-8'): string {
 
 /**
  * Generate XML stylesheet processing instruction
- * 
+ *
  * @param href - Stylesheet URL
  * @param type - MIME type (default: 'text/xsl')
  * @returns Stylesheet processing instruction
@@ -59,7 +59,7 @@ export function xmlStylesheet(href: string, type = 'text/xsl'): string {
 
 /**
  * Create an XML element with text content
- * 
+ *
  * @param tagName - Name of the XML element
  * @param content - Text content of the element
  * @param attributes - Optional attributes as key-value pairs
@@ -89,7 +89,7 @@ export function createElement(
 
 /**
  * Create an XML element with child elements
- * 
+ *
  * @param tagName - Name of the XML element
  * @param children - Array of child element strings
  * @param attributes - Optional attributes as key-value pairs
@@ -119,7 +119,7 @@ export function createElementWithChildren(
 
 /**
  * Format XML with proper indentation
- * 
+ *
  * @param xml - Raw XML string
  * @param indent - Indentation string (default: '  ')
  * @returns Formatted XML string
@@ -131,34 +131,34 @@ export function formatXml(xml: string, indent = '  '): string {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    
+
     if (!line) continue;
-    
+
     if (i > 0) {
       formatted += '<';
     }
-    
+
     if (line.match(/^\/\w/)) {
       level--;
     }
-    
+
     formatted += indent.repeat(level) + line;
-    
+
     if (i < lines.length - 1) {
       formatted += i === 0 ? '>' : '>\n';
     }
-    
+
     if (line.match(/^<?\w[^>]*[^\/]$/)) {
       level++;
     }
   }
-  
+
   return formatted;
 }
 
 /**
  * Validate XML namespace declarations
- * 
+ *
  * @param namespaces - Namespace declarations as key-value pairs
  * @returns Validated namespace attributes string
  */

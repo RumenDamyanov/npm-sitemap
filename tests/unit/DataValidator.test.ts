@@ -3,7 +3,15 @@
  */
 
 import { DataValidator } from '../../src/validators/DataValidator.js';
-import type { SitemapItem, SitemapIndexItem, ImageItem, VideoItem, TranslationItem, AlternateItem, GoogleNewsItem } from '../../src/types/SitemapTypes.js';
+import type {
+  SitemapItem,
+  SitemapIndexItem,
+  ImageItem,
+  VideoItem,
+  TranslationItem,
+  AlternateItem,
+  GoogleNewsItem,
+} from '../../src/types/SitemapTypes.js';
 
 describe('DataValidator', () => {
   let validator: DataValidator;
@@ -118,7 +126,7 @@ describe('DataValidator', () => {
         priority: 0.8,
         changefreq: 'weekly',
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors).toEqual([]);
     });
@@ -126,7 +134,7 @@ describe('DataValidator', () => {
     it('should validate required loc field', () => {
       const item = {} as SitemapItem;
       const errors = validator.validateItem(item);
-      
+
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'loc')).toBe(true);
     });
@@ -135,7 +143,7 @@ describe('DataValidator', () => {
       const item: SitemapItem = {
         loc: 'invalid-url',
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'loc' && e.type === 'url')).toBe(true);
@@ -146,7 +154,7 @@ describe('DataValidator', () => {
         loc: 'https://example.com/',
         priority: 1.5,
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'priority' && e.type === 'priority')).toBe(true);
@@ -157,7 +165,7 @@ describe('DataValidator', () => {
         loc: 'https://example.com/',
         lastmod: 'invalid-date',
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'lastmod' && e.type === 'date')).toBe(true);
@@ -168,7 +176,7 @@ describe('DataValidator', () => {
         loc: 'https://example.com/',
         changefreq: 'invalid-freq' as any,
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'changefreq')).toBe(true);
@@ -176,13 +184,13 @@ describe('DataValidator', () => {
 
     it('should validate all valid changefreq values', () => {
       const validFreqs = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
-      
+
       for (const freq of validFreqs) {
         const item: SitemapItem = {
           loc: 'https://example.com/',
           changefreq: freq as any,
         };
-        
+
         const errors = validator.validateItem(item);
         expect(errors.filter(e => e.field === 'changefreq')).toEqual([]);
       }
@@ -196,7 +204,7 @@ describe('DataValidator', () => {
         title: 'Image Title',
         caption: 'Image Caption',
       };
-      
+
       const errors = validator.validateImageItem(image);
       expect(errors).toEqual([]);
     });
@@ -204,7 +212,7 @@ describe('DataValidator', () => {
     it('should validate required url field', () => {
       const image = {} as ImageItem;
       const errors = validator.validateImageItem(image);
-      
+
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'image.url')).toBe(true);
     });
@@ -213,7 +221,7 @@ describe('DataValidator', () => {
       const image: ImageItem = {
         url: 'invalid-url',
       };
-      
+
       const errors = validator.validateImageItem(image);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'image.url' && e.type === 'url')).toBe(true);
@@ -223,7 +231,7 @@ describe('DataValidator', () => {
       const image: ImageItem = {
         url: 'https://example.com/image.jpg',
       };
-      
+
       const errors = validator.validateImageItem(image);
       expect(errors).toEqual([]);
     });
@@ -234,7 +242,7 @@ describe('DataValidator', () => {
         url: 'https://example.com/image.jpg',
         title: longTitle,
       };
-      
+
       const errors = validator.validateImageItem(image);
       // This test might pass if there's no title length validation implemented
       // The validator should ideally check for reasonable title lengths
@@ -250,7 +258,7 @@ describe('DataValidator', () => {
         description: 'Video Description',
         duration: 120,
       };
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors).toEqual([]);
     });
@@ -260,7 +268,7 @@ describe('DataValidator', () => {
         title: 'Video Title',
         description: 'Video Description',
       } as VideoItem;
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.thumbnail_url')).toBe(true);
@@ -271,7 +279,7 @@ describe('DataValidator', () => {
         thumbnail_url: 'https://example.com/thumb.jpg',
         description: 'Video Description',
       } as VideoItem;
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.title')).toBe(true);
@@ -282,7 +290,7 @@ describe('DataValidator', () => {
         thumbnail_url: 'https://example.com/thumb.jpg',
         title: 'Video Title',
       } as VideoItem;
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.description')).toBe(true);
@@ -294,7 +302,7 @@ describe('DataValidator', () => {
         title: 'Video Title',
         description: 'Video Description',
       };
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.thumbnail_url' && e.type === 'url')).toBe(true);
@@ -307,7 +315,7 @@ describe('DataValidator', () => {
         description: 'Video Description',
         duration: -1,
       };
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.duration')).toBe(true);
@@ -320,7 +328,7 @@ describe('DataValidator', () => {
         description: 'Video Description',
         rating: 6.0, // Should be between 0.0 and 5.0
       };
-      
+
       const errors = validator.validateVideoItem(video);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'video.rating')).toBe(true);
@@ -328,7 +336,7 @@ describe('DataValidator', () => {
 
     it('should accept valid rating values', () => {
       const validRatings = [0.0, 2.5, 5.0];
-      
+
       for (const rating of validRatings) {
         const video: VideoItem = {
           thumbnail_url: 'https://example.com/thumb.jpg',
@@ -336,7 +344,7 @@ describe('DataValidator', () => {
           description: 'Video Description',
           rating,
         };
-        
+
         const errors = validator.validateVideoItem(video);
         expect(errors.filter(e => e.field === 'rating')).toEqual([]);
       }
@@ -349,7 +357,7 @@ describe('DataValidator', () => {
         language: 'es',
         url: 'https://example.com/es/page',
       };
-      
+
       const errors = validator.validateTranslationItem(translation);
       expect(errors).toEqual([]);
     });
@@ -358,7 +366,7 @@ describe('DataValidator', () => {
       const translation = {
         url: 'https://example.com/es/page',
       } as TranslationItem;
-      
+
       const errors = validator.validateTranslationItem(translation);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'translation.language')).toBe(true);
@@ -368,7 +376,7 @@ describe('DataValidator', () => {
       const translation = {
         language: 'es',
       } as TranslationItem;
-      
+
       const errors = validator.validateTranslationItem(translation);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'translation.url')).toBe(true);
@@ -379,7 +387,7 @@ describe('DataValidator', () => {
         language: 'es',
         url: 'invalid-url',
       };
-      
+
       const errors = validator.validateTranslationItem(translation);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'translation.url' && e.type === 'url')).toBe(true);
@@ -390,7 +398,7 @@ describe('DataValidator', () => {
         language: 'invalid-lang-code-too-long',
         url: 'https://example.com/page',
       };
-      
+
       const errors = validator.validateTranslationItem(translation);
       // May or may not have language validation depending on implementation
       expect(errors.length).toBeGreaterThanOrEqual(0);
@@ -403,7 +411,7 @@ describe('DataValidator', () => {
         url: 'https://m.example.com/page',
         media: 'only screen and (max-width: 640px)',
       };
-      
+
       const errors = validator.validateAlternateItem(alternate);
       expect(errors).toEqual([]);
     });
@@ -412,7 +420,7 @@ describe('DataValidator', () => {
       const alternate = {
         media: 'only screen and (max-width: 640px)',
       } as AlternateItem;
-      
+
       const errors = validator.validateAlternateItem(alternate);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'alternate.url')).toBe(true);
@@ -422,7 +430,7 @@ describe('DataValidator', () => {
       const alternate: AlternateItem = {
         url: 'invalid-url',
       };
-      
+
       const errors = validator.validateAlternateItem(alternate);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'alternate.url' && e.type === 'url')).toBe(true);
@@ -432,7 +440,7 @@ describe('DataValidator', () => {
       const alternate: AlternateItem = {
         url: 'https://m.example.com/page',
       };
-      
+
       const errors = validator.validateAlternateItem(alternate);
       expect(errors).toEqual([]);
     });
@@ -446,7 +454,7 @@ describe('DataValidator', () => {
         publication_date: '2025-01-01T12:00:00Z',
         title: 'Breaking News Title',
       };
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors).toEqual([]);
     });
@@ -456,7 +464,7 @@ describe('DataValidator', () => {
         language: 'en',
         publication_date: '2025-01-01T12:00:00Z',
       } as GoogleNewsItem;
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'googlenews.sitename')).toBe(true);
@@ -467,7 +475,7 @@ describe('DataValidator', () => {
         sitename: 'Example News',
         publication_date: '2025-01-01T12:00:00Z',
       } as GoogleNewsItem;
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'googlenews.language')).toBe(true);
@@ -478,7 +486,7 @@ describe('DataValidator', () => {
         sitename: 'Example News',
         language: 'en',
       } as GoogleNewsItem;
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field === 'googlenews.publication_date')).toBe(true);
@@ -490,10 +498,12 @@ describe('DataValidator', () => {
         language: 'en',
         publication_date: 'invalid-date',
       };
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors.some(e => e.field === 'googlenews.publication_date' && e.type === 'date')).toBe(true);
+      expect(errors.some(e => e.field === 'googlenews.publication_date' && e.type === 'date')).toBe(
+        true
+      );
     });
 
     it('should handle optional title field', () => {
@@ -502,7 +512,7 @@ describe('DataValidator', () => {
         language: 'en',
         publication_date: '2025-01-01T12:00:00Z',
       };
-      
+
       const errors = validator.validateGoogleNewsItem(news);
       expect(errors).toEqual([]);
     });
@@ -517,7 +527,7 @@ describe('DataValidator', () => {
           { url: 'invalid-url', title: 'Image 2' },
         ],
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field.includes('images[1].image.url'))).toBe(true);
@@ -539,7 +549,7 @@ describe('DataValidator', () => {
           },
         ],
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field.includes('videos[1].video.thumbnail_url'))).toBe(true);
@@ -553,7 +563,7 @@ describe('DataValidator', () => {
           { language: 'fr', url: 'invalid-url' },
         ],
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field.includes('translations[1].translation.url'))).toBe(true);
@@ -562,12 +572,9 @@ describe('DataValidator', () => {
     it('should validate item with alternates', () => {
       const item: SitemapItem = {
         loc: 'https://example.com/page',
-        alternates: [
-          { url: 'https://m.example.com/page' },
-          { url: 'invalid-url' },
-        ],
+        alternates: [{ url: 'https://m.example.com/page' }, { url: 'invalid-url' }],
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field.includes('alternates[1].alternate.url'))).toBe(true);
@@ -582,7 +589,7 @@ describe('DataValidator', () => {
           publication_date: 'invalid-date',
         },
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors.length).toBeGreaterThan(0);
       expect(errors.some(e => e.field.includes('googlenews.publication_date'))).toBe(true);
@@ -592,22 +599,22 @@ describe('DataValidator', () => {
   describe('validateIndexItem method', () => {
     it('should return empty array for valid index item', () => {
       const validator = new DataValidator();
-      
+
       const indexItem: SitemapIndexItem = {
-        loc: 'https://example.com/sitemap.xml'
+        loc: 'https://example.com/sitemap.xml',
       };
-      
+
       const errors = validator.validateIndexItem(indexItem);
       expect(errors).toEqual([]);
     });
 
     it('should validate required loc field in index item', () => {
       const validator = new DataValidator();
-      
+
       const indexItem: SitemapIndexItem = {
-        loc: ''
+        loc: '',
       };
-      
+
       const errors = validator.validateIndexItem(indexItem);
       expect(errors).toHaveLength(1);
       expect(errors[0].field).toBe('loc');
@@ -616,12 +623,12 @@ describe('DataValidator', () => {
 
     it('should validate lastmod date format in index item', () => {
       const validator = new DataValidator();
-      
+
       const indexItem: SitemapIndexItem = {
         loc: 'https://example.com/sitemap.xml',
-        lastmod: 'invalid-date'
+        lastmod: 'invalid-date',
       };
-      
+
       const errors = validator.validateIndexItem(indexItem);
       expect(errors).toHaveLength(1);
       expect(errors[0].field).toBe('lastmod');
@@ -630,11 +637,11 @@ describe('DataValidator', () => {
 
     it('should validate URL format in loc field for index item (line 422)', () => {
       const validator = new DataValidator();
-      
+
       const indexItem: SitemapIndexItem = {
-        loc: 'invalid-url-format'
+        loc: 'invalid-url-format',
       };
-      
+
       const errors = validator.validateIndexItem(indexItem);
       expect(errors).toHaveLength(1);
       expect(errors[0].field).toBe('loc');
@@ -646,16 +653,16 @@ describe('DataValidator', () => {
   describe('future date validation', () => {
     it('should reject future lastmod dates', () => {
       const validator = new DataValidator();
-      
+
       // Create a date 1 day in the future
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 1);
-      
+
       const item: SitemapItem = {
         loc: 'https://example.com/',
-        lastmod: futureDate.toISOString()
+        lastmod: futureDate.toISOString(),
       };
-      
+
       const errors = validator.validateItem(item);
       expect(errors).toHaveLength(1);
       expect(errors[0].field).toBe('lastmod');

@@ -1,6 +1,6 @@
 /**
  * @rumenx/sitemap - XML Sitemap Generator for Node.js
- * 
+ *
  * A comprehensive library for generating XML sitemaps with support for:
  * - Standard sitemap fields (loc, lastmod, changefreq, priority)
  * - Image sitemaps
@@ -10,7 +10,7 @@
  * - Sitemap index files
  * - Validation and error checking
  * - Multiple output formats (XML, TXT, HTML)
- * 
+ *
  * @author Rumen Damyanov <contact@rumenx.com>
  * @license MIT
  * @packageDocumentation
@@ -34,23 +34,11 @@ export type {
 export type * from './types/index.js';
 
 // Utilities - export individual functions
-export {
-  formatDate,
-  isValidDate,
-  parseDate,
-} from './utils/DateUtils.js';
+export { formatDate, isValidDate, parseDate } from './utils/DateUtils.js';
 
-export {
-  escapeXml,
-  createElement,
-  formatXml,
-} from './utils/XmlUtils.js';
+export { escapeXml, createElement, formatXml } from './utils/XmlUtils.js';
 
-export {
-  isValidUrl,
-  normalizeUrl,
-  resolveUrl,
-} from './validators/UrlValidator.js';
+export { isValidUrl, normalizeUrl, resolveUrl } from './validators/UrlValidator.js';
 
 export { DataValidator } from './validators/DataValidator.js';
 
@@ -65,9 +53,9 @@ export const name = '@rumenx/sitemap';
 export const packageInfo = Object.freeze({
   name,
   version,
-  description: 'A comprehensive TypeScript package for generating XML sitemaps in Node.js applications',
+  description:
+    'A comprehensive TypeScript package for generating XML sitemaps in Node.js applications',
   author: 'Rumen Damyanov <contact@rumenx.com>',
   repository: 'https://github.com/RumenDamyanov/npm-sitemap',
   license: 'MIT',
 } as const);
-

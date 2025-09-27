@@ -1,6 +1,6 @@
 /**
  * Data validation utilities for sitemap items
- * 
+ *
  * This module provides comprehensive validation for sitemap item data
  * including priority values, dates, and structured content.
  */
@@ -39,7 +39,7 @@ const VALID_FREQUENCIES: ChangeFrequency[] = [
 export class DataValidator implements IValidator {
   /**
    * Validate a URL
-   * 
+   *
    * @param url - URL to validate
    * @returns True if valid
    */
@@ -49,20 +49,17 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a priority value
-   * 
+   *
    * @param priority - Priority to validate
    * @returns True if valid
    */
   isValidPriority(priority: number): boolean {
-    return typeof priority === 'number' && 
-           priority >= 0.0 && 
-           priority <= 1.0 && 
-           !isNaN(priority);
+    return typeof priority === 'number' && priority >= 0.0 && priority <= 1.0 && !isNaN(priority);
   }
 
   /**
    * Validate a date
-   * 
+   *
    * @param date - Date to validate
    * @returns True if valid
    */
@@ -75,7 +72,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a change frequency value
-   * 
+   *
    * @param freq - Frequency to validate
    * @returns True if valid
    */
@@ -85,7 +82,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate an image item
-   * 
+   *
    * @param image - Image item to validate
    * @returns Array of validation errors
    */
@@ -113,7 +110,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a video item
-   * 
+   *
    * @param video - Video item to validate
    * @returns Array of validation errors
    */
@@ -179,7 +176,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a translation item
-   * 
+   *
    * @param translation - Translation item to validate
    * @returns Array of validation errors
    */
@@ -216,7 +213,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate an alternate item
-   * 
+   *
    * @param alternate - Alternate item to validate
    * @returns Array of validation errors
    */
@@ -244,7 +241,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a Google News item
-   * 
+   *
    * @param news - Google News item to validate
    * @returns Array of validation errors
    */
@@ -290,7 +287,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a complete sitemap item
-   * 
+   *
    * @param item - Item to validate
    * @returns Array of validation errors
    */
@@ -357,40 +354,48 @@ export class DataValidator implements IValidator {
     if (item.images) {
       item.images.forEach((image, index) => {
         const imageErrors = this.validateImageItem(image);
-        errors.push(...imageErrors.map(error => ({
-          ...error,
-          field: `images[${index}].${error.field}`,
-        })));
+        errors.push(
+          ...imageErrors.map(error => ({
+            ...error,
+            field: `images[${index}].${error.field}`,
+          }))
+        );
       });
     }
 
     if (item.videos) {
       item.videos.forEach((video, index) => {
         const videoErrors = this.validateVideoItem(video);
-        errors.push(...videoErrors.map(error => ({
-          ...error,
-          field: `videos[${index}].${error.field}`,
-        })));
+        errors.push(
+          ...videoErrors.map(error => ({
+            ...error,
+            field: `videos[${index}].${error.field}`,
+          }))
+        );
       });
     }
 
     if (item.translations) {
       item.translations.forEach((translation, index) => {
         const translationErrors = this.validateTranslationItem(translation);
-        errors.push(...translationErrors.map(error => ({
-          ...error,
-          field: `translations[${index}].${error.field}`,
-        })));
+        errors.push(
+          ...translationErrors.map(error => ({
+            ...error,
+            field: `translations[${index}].${error.field}`,
+          }))
+        );
       });
     }
 
     if (item.alternates) {
       item.alternates.forEach((alternate, index) => {
         const alternateErrors = this.validateAlternateItem(alternate);
-        errors.push(...alternateErrors.map(error => ({
-          ...error,
-          field: `alternates[${index}].${error.field}`,
-        })));
+        errors.push(
+          ...alternateErrors.map(error => ({
+            ...error,
+            field: `alternates[${index}].${error.field}`,
+          }))
+        );
       });
     }
 
@@ -404,7 +409,7 @@ export class DataValidator implements IValidator {
 
   /**
    * Validate a sitemap index item
-   * 
+   *
    * @param item - Index item to validate
    * @returns Array of validation errors
    */

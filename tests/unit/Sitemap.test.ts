@@ -32,7 +32,7 @@ describe('Sitemap', () => {
     it('should add a simple URL', () => {
       sitemap.add('https://example.com/');
       expect(sitemap.getItemCount()).toBe(1);
-      
+
       const items = sitemap.getItems();
       expect(items[0].loc).toBe('https://example.com/');
     });
@@ -40,10 +40,10 @@ describe('Sitemap', () => {
     it('should add URL with all optional parameters', () => {
       const lastmod = new Date('2025-01-01');
       sitemap.add('https://example.com/page', lastmod, 0.8, 'weekly');
-      
+
       const items = sitemap.getItems();
       const item = items[0];
-      
+
       expect(item.loc).toBe('https://example.com/page');
       expect(item.lastmod).toBe('2025-01-01T00:00:00.000Z');
       expect(item.priority).toBe(0.8);
@@ -57,13 +57,13 @@ describe('Sitemap', () => {
             url: 'https://example.com/image1.jpg',
             title: 'Image 1',
             caption: 'A beautiful image',
-          }
-        ]
+          },
+        ],
       });
-      
+
       const items = sitemap.getItems();
       const item = items[0];
-      
+
       expect(item.images).toHaveLength(1);
       expect(item.images![0].url).toBe('https://example.com/image1.jpg');
       expect(item.images![0].title).toBe('Image 1');
@@ -83,10 +83,10 @@ describe('Sitemap', () => {
         priority: 0.9,
         changefreq: 'monthly',
       };
-      
+
       sitemap.addItem(item);
       expect(sitemap.getItemCount()).toBe(1);
-      
+
       const items = sitemap.getItems();
       expect(items[0].loc).toBe('https://example.com/about');
       expect(items[0].priority).toBe(0.9);
@@ -98,7 +98,7 @@ describe('Sitemap', () => {
         { loc: 'https://example.com/page2' },
         { loc: 'https://example.com/page3' },
       ];
-      
+
       sitemap.addItem(items);
       expect(sitemap.getItemCount()).toBe(3);
     });
@@ -108,7 +108,7 @@ describe('Sitemap', () => {
         loc: 'https://example.com/news',
         lastmod: new Date('2025-01-01T12:00:00Z'),
       };
-      
+
       sitemap.addItem(item);
       const items = sitemap.getItems();
       expect(items[0].lastmod).toBe('2025-01-01T12:00:00.000Z');
@@ -129,7 +129,7 @@ describe('Sitemap', () => {
     it('should return correct items and count after adding items', () => {
       sitemap.add('https://example.com/1');
       sitemap.add('https://example.com/2');
-      
+
       const items = sitemap.getItems();
       expect(items).toHaveLength(2);
       expect(sitemap.getItemCount()).toBe(2);
@@ -143,7 +143,7 @@ describe('Sitemap', () => {
       sitemap.add('https://example.com/1');
       sitemap.add('https://example.com/2');
       expect(sitemap.getItemCount()).toBe(2);
-      
+
       sitemap.clear();
       expect(sitemap.getItemCount()).toBe(0);
       expect(sitemap.getItems()).toEqual([]);
@@ -165,7 +165,7 @@ describe('Sitemap', () => {
 
     it('should remove items matching the predicate', () => {
       sitemap.removeItems(item => item.loc.includes('remove'));
-      
+
       expect(sitemap.getItemCount()).toBe(2);
       const items = sitemap.getItems();
       expect(items[0].loc).toBe('https://example.com/keep1');
@@ -181,7 +181,7 @@ describe('Sitemap', () => {
   describe('getStats method', () => {
     it('should return correct statistics for empty sitemap', () => {
       const stats = sitemap.getStats();
-      
+
       expect(stats.urls).toBe(0);
       expect(stats.withImages).toBe(0);
       expect(stats.withVideos).toBe(0);
@@ -202,12 +202,12 @@ describe('Sitemap', () => {
             thumbnail_url: 'https://example.com/thumb1.jpg',
             title: 'Video 1',
             description: 'A great video',
-          }
-        ]
+          },
+        ],
       });
 
       const stats = sitemap.getStats();
-      
+
       expect(stats.urls).toBe(1);
       expect(stats.withImages).toBe(1);
       expect(stats.withVideos).toBe(1);
@@ -219,7 +219,7 @@ describe('Sitemap', () => {
   describe('toXML method', () => {
     it('should generate valid XML for empty sitemap', () => {
       const xml = sitemap.toXML();
-      
+
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
       expect(xml).toContain('</urlset>');
@@ -228,9 +228,9 @@ describe('Sitemap', () => {
     it('should generate XML with URL entries', () => {
       sitemap.add('https://example.com/');
       sitemap.add('https://example.com/about', new Date('2025-01-01'), 0.8, 'monthly');
-      
+
       const xml = sitemap.toXML();
-      
+
       expect(xml).toContain('<url>');
       expect(xml).toContain('<loc>https://example.com/</loc>');
       expect(xml).toContain('<loc>https://example.com/about</loc>');
@@ -243,11 +243,11 @@ describe('Sitemap', () => {
     it('should include image namespace when images are present', () => {
       sitemap.addItem({
         loc: 'https://example.com/gallery',
-        images: [{ url: 'https://example.com/img1.jpg', title: 'Image 1' }]
+        images: [{ url: 'https://example.com/img1.jpg', title: 'Image 1' }],
       });
-      
+
       const xml = sitemap.toXML();
-      
+
       expect(xml).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
       expect(xml).toContain('<image:image>');
       expect(xml).toContain('<image:loc>https://example.com/img1.jpg</image:loc>');
@@ -257,7 +257,7 @@ describe('Sitemap', () => {
     it('should generate pretty-formatted XML by default', () => {
       sitemap.add('https://example.com/');
       const xml = sitemap.toXML();
-      
+
       // Check for indentation - based on actual output
       expect(xml).toContain('<url>');
       expect(xml).toContain('  <loc>'); // loc should be indented within url
@@ -267,7 +267,7 @@ describe('Sitemap', () => {
       const compactSitemap = new Sitemap({ pretty: false });
       compactSitemap.add('https://example.com/');
       const xml = compactSitemap.toXML();
-      
+
       // Should not have extra indentation
       expect(xml).toContain('<url>');
       expect(xml).not.toContain('  <url>');
@@ -279,10 +279,10 @@ describe('Sitemap', () => {
       sitemap.add('https://example.com/');
       sitemap.add('https://example.com/about');
       sitemap.add('https://example.com/contact');
-      
+
       const txt = sitemap.toTXT();
       const lines = txt.split('\n');
-      
+
       expect(lines).toHaveLength(3);
       expect(lines[0]).toBe('https://example.com/');
       expect(lines[1]).toBe('https://example.com/about');
@@ -317,7 +317,7 @@ describe('Sitemap', () => {
     it('should resolve relative URLs with baseUrl', () => {
       const sitemapWithBase = new Sitemap({ baseUrl: 'https://example.com' });
       sitemapWithBase.add('/relative-path');
-      
+
       const items = sitemapWithBase.getItems();
       expect(items[0].loc).toBe('https://example.com/relative-path');
     });
@@ -325,7 +325,7 @@ describe('Sitemap', () => {
     it('should keep absolute URLs unchanged', () => {
       const sitemapWithBase = new Sitemap({ baseUrl: 'https://example.com' });
       sitemapWithBase.add('https://other.com/absolute');
-      
+
       const items = sitemapWithBase.getItems();
       expect(items[0].loc).toBe('https://other.com/absolute');
     });
@@ -341,12 +341,12 @@ describe('Sitemap', () => {
 
     it('should skip validation when disabled', () => {
       const nonValidatingSitemap = new Sitemap({ validate: false });
-      
+
       // Should not throw for invalid URL when validation is disabled
       expect(() => {
         nonValidatingSitemap.add('invalid-url');
       }).not.toThrow();
-      
+
       expect(nonValidatingSitemap.getItemCount()).toBe(1);
     });
   });
@@ -362,61 +362,61 @@ describe('Sitemap', () => {
           {
             url: 'https://example.com/image1.jpg',
             title: 'Image Title',
-            caption: 'Image Caption'
+            caption: 'Image Caption',
           },
           {
-            url: 'https://example.com/image2.jpg'
-          }
+            url: 'https://example.com/image2.jpg',
+          },
         ],
         videos: [
           {
             thumbnail_url: 'https://example.com/thumb.jpg',
             title: 'Video Title',
             description: 'Video Description',
-            duration: 120
+            duration: 120,
           },
           {
             thumbnail_url: 'https://example.com/thumb2.jpg',
             title: 'Video Title 2',
-            description: 'Video Description 2'
-          }
+            description: 'Video Description 2',
+          },
         ],
         translations: [
           {
             language: 'es',
-            url: 'https://example.com/es/complex'
+            url: 'https://example.com/es/complex',
           },
           {
             language: 'fr',
-            url: 'https://example.com/fr/complex'
-          }
+            url: 'https://example.com/fr/complex',
+          },
         ],
         alternates: [
           {
             url: 'https://m.example.com/complex',
-            media: 'only screen and (max-width: 640px)'
+            media: 'only screen and (max-width: 640px)',
           },
           {
-            url: 'https://amp.example.com/complex'
-          }
+            url: 'https://amp.example.com/complex',
+          },
         ],
         googlenews: {
           sitename: 'Example News',
           language: 'en',
           publication_date: '2025-01-01T00:00:00.000Z',
-          title: 'News Article Title'
-        }
+          title: 'News Article Title',
+        },
       };
 
       sitemap.addItem(complexItem);
       const xml = sitemap.toXML();
-      
+
       // Check all namespaces are included
       expect(xml).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
       expect(xml).toContain('xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"');
       expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
       expect(xml).toContain('xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"');
-      
+
       // Check all content is rendered
       expect(xml).toContain('<image:image>');
       expect(xml).toContain('<image:title>Image Title</image:title>');
@@ -424,7 +424,9 @@ describe('Sitemap', () => {
       expect(xml).toContain('<video:video>');
       expect(xml).toContain('<video:duration>120</video:duration>');
       expect(xml).toContain('<xhtml:link rel="alternate" hreflang="es"');
-      expect(xml).toContain('<xhtml:link rel="alternate" media="only screen and (max-width: 640px)"');
+      expect(xml).toContain(
+        '<xhtml:link rel="alternate" media="only screen and (max-width: 640px)"'
+      );
       expect(xml).toContain('<news:news>');
       expect(xml).toContain('<news:title>News Article Title</news:title>');
     });
@@ -434,35 +436,35 @@ describe('Sitemap', () => {
         loc: 'https://example.com/partial',
         images: [
           {
-            url: 'https://example.com/image.jpg'
+            url: 'https://example.com/image.jpg',
             // No title or caption
-          }
+          },
         ],
         videos: [
           {
             thumbnail_url: 'https://example.com/thumb.jpg',
             title: 'Video Title',
-            description: 'Video Description'
+            description: 'Video Description',
             // No duration
-          }
+          },
         ],
         googlenews: {
           sitename: 'Example News',
           language: 'en',
-          publication_date: '2025-01-01T00:00:00.000Z'
+          publication_date: '2025-01-01T00:00:00.000Z',
           // No title
-        }
+        },
       };
 
       sitemap.addItem(partialItem);
       const xml = sitemap.toXML();
-      
+
       // Should not contain optional elements that weren't provided
       expect(xml).not.toContain('<image:title>');
       expect(xml).not.toContain('<image:caption>');
       expect(xml).not.toContain('<video:duration>');
       expect(xml).not.toContain('<news:title>');
-      
+
       // But should contain required elements
       expect(xml).toContain('<image:loc>');
       expect(xml).toContain('<video:thumbnail_loc>');
@@ -475,12 +477,12 @@ describe('Sitemap', () => {
         images: [],
         videos: [],
         translations: [],
-        alternates: []
+        alternates: [],
       };
 
       sitemap.addItem(itemWithEmptyArrays);
       const xml = sitemap.toXML();
-      
+
       // Should not include namespaces for empty arrays
       expect(xml).not.toContain('xmlns:image=');
       expect(xml).not.toContain('xmlns:video=');
@@ -493,15 +495,15 @@ describe('Sitemap', () => {
         loc: 'https://example.com/alt',
         alternates: [
           {
-            url: 'https://amp.example.com/alt'
+            url: 'https://amp.example.com/alt',
             // No media attribute
-          }
-        ]
+          },
+        ],
       };
 
       sitemap.addItem(item);
       const xml = sitemap.toXML();
-      
+
       // Should not include media attribute when not provided
       expect(xml).toContain('<xhtml:link rel="alternate" href="https://amp.example.com/alt" />');
       expect(xml).not.toContain(' media=');
@@ -516,20 +518,20 @@ describe('Sitemap', () => {
           {
             url: 'https://example.com/image.jpg?param=<>&"\'',
             title: 'Title with <>&"\' characters',
-            caption: 'Caption with <>&"\' characters'
-          }
+            caption: 'Caption with <>&"\' characters',
+          },
         ],
         googlenews: {
           sitename: 'Site with <>&"\' characters',
           language: 'en',
           publication_date: '2025-01-01T00:00:00.000Z',
-          title: 'News with <>&"\' characters'
-        }
+          title: 'News with <>&"\' characters',
+        },
       };
 
       sitemap.addItem(item);
       const xml = sitemap.toXML();
-      
+
       // Check that characters are properly escaped
       expect(xml).toContain('&lt;');
       expect(xml).toContain('&gt;');
@@ -545,14 +547,14 @@ describe('Sitemap', () => {
         images: [
           {
             url: 'https://example.com/image.jpg?param=<>&"\'',
-            title: 'Title with <>&"\' characters'
-          }
-        ]
+            title: 'Title with <>&"\' characters',
+          },
+        ],
       };
 
       noEscapeSitemap.addItem(item);
       const xml = noEscapeSitemap.toXML();
-      
+
       // Characters should not be escaped
       expect(xml).toContain('<>&"\'');
       expect(xml).not.toContain('&lt;');
@@ -566,18 +568,18 @@ describe('Sitemap', () => {
   describe('render method edge cases', () => {
     it('should throw error for unsupported format', () => {
       sitemap.add('https://example.com/');
-      
+
       expect(() => {
         sitemap.render('json' as any);
-      }).toThrow('Format \'json\' not yet implemented. Currently only \'xml\' is supported.');
+      }).toThrow("Format 'json' not yet implemented. Currently only 'xml' is supported.");
     });
 
     it('should render HTML format', () => {
       sitemap.add('https://example.com/');
-      
+
       expect(() => {
         sitemap.render('html');
-      }).toThrow('Format \'html\' not yet implemented. Currently only \'xml\' is supported.');
+      }).toThrow("Format 'html' not yet implemented. Currently only 'xml' is supported.");
     });
   });
 
@@ -586,7 +588,7 @@ describe('Sitemap', () => {
       const noValidationSitemap = new Sitemap({ validate: false });
       const item: SitemapItem = {
         loc: 'https://example.com/test',
-        lastmod: 'invalid-date' as any
+        lastmod: 'invalid-date' as any,
       };
 
       // Should not throw when validation is disabled
@@ -601,16 +603,16 @@ describe('Sitemap', () => {
         loc: 'https://example.com/test',
         images: [
           {
-            url: '' // Empty URL should be handled
-          } as any
+            url: '', // Empty URL should be handled
+          } as any,
         ],
         videos: [
           {
             thumbnail_url: '',
             title: '',
-            description: ''
-          } as any
-        ]
+            description: '',
+          } as any,
+        ],
       };
 
       // Should not throw when validation is disabled
@@ -622,7 +624,7 @@ describe('Sitemap', () => {
     it('should validate and throw errors when validation is enabled', () => {
       const item: SitemapItem = {
         loc: 'https://example.com/test',
-        lastmod: 'invalid-date' as any
+        lastmod: 'invalid-date' as any,
       };
 
       // Should throw when validation is enabled (default)

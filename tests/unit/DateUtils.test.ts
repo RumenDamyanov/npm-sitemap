@@ -10,7 +10,7 @@ import {
   isValidLastModDate,
   getCurrentDate,
   parseDate,
-  isSameDay
+  isSameDay,
 } from '../../src/utils/DateUtils.js';
 
 describe('DateUtils', () => {
@@ -51,7 +51,7 @@ describe('DateUtils', () => {
     it('should handle edge cases', () => {
       // Leap year
       expect(formatDate('2024-02-29')).toBe('2024-02-29T00:00:00.000Z');
-      
+
       // Year boundaries
       expect(formatDate('1999-12-31T23:59:59Z')).toBe('1999-12-31T23:59:59.000Z');
       expect(formatDate('2000-01-01T00:00:00Z')).toBe('2000-01-01T00:00:00.000Z');
@@ -108,10 +108,10 @@ describe('DateUtils', () => {
 
     it('should handle both includeTime options', () => {
       const dateString = '2025-01-15T12:30:45Z';
-      
+
       const withTime = formatW3CDate(dateString, true);
       const withoutTime = formatW3CDate(dateString, false);
-      
+
       expect(withTime).toMatch(/T/);
       expect(withoutTime).not.toMatch(/T/);
       expect(withoutTime).toBe('2025-01-15');
@@ -143,7 +143,7 @@ describe('DateUtils', () => {
       expect(isValidDate('2024-02-29')).toBe(true);
       // JavaScript Date constructor adjusts '2023-02-29' to '2023-03-01', so it's "valid"
       expect(isValidDate('2023-02-29')).toBe(true);
-      
+
       // Boundary dates
       expect(isValidDate('1970-01-01')).toBe(true);
       expect(isValidDate('2099-12-31')).toBe(true);
@@ -159,7 +159,7 @@ describe('DateUtils', () => {
         'Jan 15, 2025',
         '01/15/2025',
       ];
-      
+
       for (const format of validFormats) {
         expect(isValidDate(format)).toBe(true);
       }
@@ -170,10 +170,10 @@ describe('DateUtils', () => {
     it('should return true for dates in the past', () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      
+
       const lastWeek = new Date();
       lastWeek.setDate(lastWeek.getDate() - 7);
-      
+
       expect(isValidLastModDate(yesterday)).toBe(true);
       expect(isValidLastModDate(lastWeek)).toBe(true);
       expect(isValidLastModDate('2020-01-01')).toBe(true);
@@ -187,10 +187,10 @@ describe('DateUtils', () => {
     it('should return false for future dates', () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      
+
       const nextYear = new Date();
       nextYear.setFullYear(nextYear.getFullYear() + 1);
-      
+
       expect(isValidLastModDate(tomorrow)).toBe(false);
       expect(isValidLastModDate(nextYear)).toBe(false);
       expect(isValidLastModDate('2099-12-31')).toBe(false);
@@ -223,7 +223,7 @@ describe('DateUtils', () => {
       const before = new Date();
       const current = getCurrentDate();
       const after = new Date();
-      
+
       const currentDate = new Date(current);
       expect(currentDate.getTime()).toBeGreaterThanOrEqual(before.getTime() - 1000); // 1 second tolerance
       expect(currentDate.getTime()).toBeLessThanOrEqual(after.getTime() + 1000);
@@ -237,7 +237,7 @@ describe('DateUtils', () => {
         // Busy wait for at least 2ms
       }
       const second = getCurrentDate();
-      
+
       // If timestamps are the same, they might be equal - that's actually fine for most uses
       // Let's just check they're both valid dates
       expect(new Date(first).getTime()).toBeGreaterThan(0);
@@ -249,7 +249,7 @@ describe('DateUtils', () => {
     it('should parse Date objects by creating a copy', () => {
       const original = new Date('2025-01-15T12:30:45.123Z');
       const parsed = parseDate(original);
-      
+
       expect(parsed).toBeInstanceOf(Date);
       expect(parsed.getTime()).toBe(original.getTime());
       expect(parsed).not.toBe(original); // Should be a copy
@@ -266,7 +266,7 @@ describe('DateUtils', () => {
     it('should parse timestamp numbers', () => {
       const timestamp = 1642204245123; // 2022-01-15T01:30:45.123Z
       const result = parseDate(timestamp);
-      
+
       expect(result).toBeInstanceOf(Date);
       expect(result.getTime()).toBe(timestamp);
     });
@@ -280,7 +280,7 @@ describe('DateUtils', () => {
         'January 15, 2025',
         'Jan 15, 2025',
       ];
-      
+
       for (const format of formats) {
         const result = parseDate(format);
         expect(result).toBeInstanceOf(Date);
@@ -302,7 +302,7 @@ describe('DateUtils', () => {
       // Unix epoch
       const epoch = parseDate(0);
       expect(epoch.getTime()).toBe(0);
-      
+
       // Leap year
       const leapYear = parseDate('2024-02-29');
       expect(leapYear.getFullYear()).toBe(2024);
@@ -315,7 +315,7 @@ describe('DateUtils', () => {
     it('should return true for same day with different times', () => {
       const morning = new Date('2025-01-15T08:00:00Z');
       const evening = new Date('2025-01-15T20:00:00Z');
-      
+
       expect(isSameDay(morning, evening)).toBe(true);
     });
 
@@ -328,7 +328,7 @@ describe('DateUtils', () => {
       const today = new Date('2025-01-15T12:00:00Z');
       const tomorrow = new Date('2025-01-16T12:00:00Z');
       const yesterday = new Date('2025-01-14T12:00:00Z');
-      
+
       expect(isSameDay(today, tomorrow)).toBe(false);
       expect(isSameDay(today, yesterday)).toBe(false);
     });
@@ -337,7 +337,7 @@ describe('DateUtils', () => {
       const date = new Date('2025-01-15T12:00:00Z');
       const dateString = '2025-01-15T20:00:00Z';
       const differentDayString = '2025-01-16T12:00:00Z';
-      
+
       expect(isSameDay(date, dateString)).toBe(true);
       expect(isSameDay(date, differentDayString)).toBe(false);
     });
@@ -346,7 +346,7 @@ describe('DateUtils', () => {
       // These represent the same moment in time, different timezones
       const utc = '2025-01-15T12:00:00Z';
       const withOffset = '2025-01-15T14:00:00+02:00';
-      
+
       expect(isSameDay(utc, withOffset)).toBe(true);
     });
 
@@ -354,7 +354,7 @@ describe('DateUtils', () => {
       // These are the same UTC time but different local days
       const utcMidnight = '2025-01-15T00:00:00Z';
       const localEvening = '2025-01-14T18:00:00-06:00'; // 6 hours behind, so 00:00 UTC
-      
+
       expect(isSameDay(utcMidnight, localEvening)).toBe(true);
     });
 
@@ -367,10 +367,10 @@ describe('DateUtils', () => {
     it('should handle year, month, and day boundaries', () => {
       // Same day, different years
       expect(isSameDay('2024-01-15', '2025-01-15')).toBe(false);
-      
+
       // Same day and year, different months
       expect(isSameDay('2025-01-15', '2025-02-15')).toBe(false);
-      
+
       // Different days, same month and year
       expect(isSameDay('2025-01-15', '2025-01-16')).toBe(false);
     });
@@ -383,7 +383,7 @@ describe('DateUtils', () => {
       expect(isValidDate('2023-02-29')).toBe(true);
       expect(isValidDate('2000-02-29')).toBe(true);
       expect(isValidDate('1900-02-29')).toBe(true);
-      
+
       const leapDate = parseDate('2024-02-29');
       expect(leapDate.getDate()).toBe(29);
     });
@@ -391,7 +391,7 @@ describe('DateUtils', () => {
     it('should handle extreme dates', () => {
       const farFuture = new Date('2099-12-31T23:59:59.999Z');
       const farPast = new Date('1970-01-01T00:00:00.000Z');
-      
+
       expect(() => formatDate(farFuture)).not.toThrow();
       expect(() => formatDate(farPast)).not.toThrow();
       expect(isValidLastModDate(farFuture)).toBe(false);
@@ -402,7 +402,7 @@ describe('DateUtils', () => {
       // Spring forward and fall back dates (US Eastern Time)
       const springForward = '2025-03-09T02:30:00-05:00';
       const fallBack = '2025-11-02T01:30:00-05:00';
-      
+
       expect(() => formatDate(springForward)).not.toThrow();
       expect(() => formatDate(fallBack)).not.toThrow();
       expect(isValidDate(springForward)).toBe(true);
@@ -413,17 +413,17 @@ describe('DateUtils', () => {
       // JavaScript Date only supports milliseconds, but should parse gracefully
       const withMicroseconds = '2025-01-15T12:30:45.123456Z';
       const withNanoseconds = '2025-01-15T12:30:45.123456789Z';
-      
+
       expect(isValidDate(withMicroseconds)).toBe(true);
       expect(isValidDate(withNanoseconds)).toBe(true);
-      
+
       const parsedMicro = parseDate(withMicroseconds);
       expect(parsedMicro.getMilliseconds()).toBe(123);
     });
 
     it('should handle invalid inputs gracefully in all functions', () => {
       const invalidInputs = [null, undefined, {}, [], true, false, Symbol('test')];
-      
+
       for (const input of invalidInputs) {
         // These should not throw, but return false or handle gracefully
         // The isValidDate function is lenient and may accept some of these
@@ -434,12 +434,16 @@ describe('DateUtils', () => {
         // isValidLastModDate may be more lenient than expected
         const lastModResult = isValidLastModDate(input as any);
         expect(typeof lastModResult).toBe('boolean');
-        
+
         // These should throw for invalid inputs
         expect(() => formatDate(input as any)).toThrow();
-        
-        // parseDate only throws for inputs that create invalid dates or throw in Date constructor  
-        if (input === undefined || typeof input === 'object' && input !== null || typeof input === 'symbol') {
+
+        // parseDate only throws for inputs that create invalid dates or throw in Date constructor
+        if (
+          input === undefined ||
+          (typeof input === 'object' && input !== null) ||
+          typeof input === 'symbol'
+        ) {
           expect(() => parseDate(input as any)).toThrow();
         } else {
           // null, true, false are converted to valid dates by JavaScript's Date constructor
@@ -450,12 +454,12 @@ describe('DateUtils', () => {
 
     it('should maintain consistency across different function calls', () => {
       const testDate = '2025-01-15T12:30:45.123Z';
-      
+
       // All these should produce consistent results
       const formatted = formatDate(testDate);
       const parsed = parseDate(testDate);
       const isValid = isValidDate(testDate);
-      
+
       expect(isValid).toBe(true);
       expect(formatted).toBe(testDate);
       expect(parsed.toISOString()).toBe(testDate);

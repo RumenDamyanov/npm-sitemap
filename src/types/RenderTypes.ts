@@ -1,6 +1,6 @@
 /**
  * Renderer-specific type definitions for @rumenx/sitemap
- * 
+ *
  * This file defines types used by the various renderer classes
  * for generating different output formats.
  */
@@ -13,16 +13,16 @@ import type { SitemapItem, SitemapIndexItem, SitemapFormat } from './SitemapType
 export interface BaseRenderer {
   /** The format this renderer handles */
   format: SitemapFormat;
-  
+
   /** Render an array of sitemap items to string */
   render(items: SitemapItem[], options?: RenderOptions): string;
-  
+
   /** Render sitemap index items to string */
   renderIndex?(items: SitemapIndexItem[], options?: RenderOptions): string;
-  
+
   /** Get the MIME type for this format */
   getMimeType(): string;
-  
+
   /** Get the file extension for this format */
   getFileExtension(): string;
 }
@@ -33,16 +33,16 @@ export interface BaseRenderer {
 export interface RenderOptions {
   /** Pretty-format output with indentation */
   pretty?: boolean;
-  
+
   /** Include XML stylesheet reference */
   stylesheet?: string;
-  
+
   /** Custom XML namespaces */
   namespaces?: Record<string, string>;
-  
+
   /** Base URL for resolving relative URLs */
   baseUrl?: string;
-  
+
   /** Channel information for RSS/RDF formats */
   channel?: ChannelInfo;
 }
@@ -53,22 +53,22 @@ export interface RenderOptions {
 export interface ChannelInfo {
   /** Title of the site/channel */
   title: string;
-  
+
   /** URL of the site */
   link: string;
-  
+
   /** Description of the site */
   description?: string;
-  
+
   /** Language of the content */
   language?: string;
-  
+
   /** Copyright information */
   copyright?: string;
-  
+
   /** Managing editor email */
   managingEditor?: string;
-  
+
   /** Webmaster email */
   webMaster?: string;
 }
@@ -79,22 +79,22 @@ export interface ChannelInfo {
 export interface XmlNamespaces {
   /** Standard sitemap namespace */
   sitemap: string;
-  
+
   /** Image extension namespace */
   image?: string;
-  
+
   /** Video extension namespace */
   video?: string;
-  
+
   /** News extension namespace */
   news?: string;
-  
+
   /** Mobile extension namespace */
   mobile?: string;
-  
+
   /** hreflang namespace */
   xhtml?: string;
-  
+
   /** Custom namespaces */
   [key: string]: string | undefined;
 }
@@ -125,16 +125,16 @@ export interface RendererConfig {
 export interface XmlRenderOptions extends RenderOptions {
   /** XML declaration version */
   xmlVersion?: string;
-  
+
   /** XML encoding */
   encoding?: string;
-  
+
   /** Indentation string for pretty formatting */
   indent?: string;
-  
+
   /** Whether to include XML declaration */
   includeDeclaration?: boolean;
-  
+
   /** Whether to validate XML structure */
   validate?: boolean;
 }
@@ -145,13 +145,13 @@ export interface XmlRenderOptions extends RenderOptions {
 export interface HtmlRenderOptions extends RenderOptions {
   /** Page title for HTML output */
   title?: string;
-  
+
   /** Custom CSS styles */
   styles?: string;
-  
+
   /** Include JavaScript for table sorting */
   includeTableSorter?: boolean;
-  
+
   /** Template for HTML output */
   template?: string;
 }
@@ -162,7 +162,7 @@ export interface HtmlRenderOptions extends RenderOptions {
 export interface TxtRenderOptions extends RenderOptions {
   /** Line separator */
   separator?: string;
-  
+
   /** Whether to include only URLs (no metadata) */
   urlsOnly?: boolean;
 }
@@ -173,10 +173,10 @@ export interface TxtRenderOptions extends RenderOptions {
 export interface StreamRenderOptions extends RenderOptions {
   /** Chunk size for streaming */
   chunkSize?: number;
-  
+
   /** Whether to compress output */
   compress?: boolean;
-  
+
   /** Compression level (1-9) */
   compressionLevel?: number;
 }

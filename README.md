@@ -11,7 +11,7 @@
 
 **A comprehensive TypeScript package for generating XML sitemaps in Node.js applications**
 
-*Supporting images, videos, translations, Google News, and more with 100% type safety*
+_Supporting images, videos, translations, Google News, and more with 100% type safety_
 
 ## ✨ Features
 
@@ -79,16 +79,18 @@ sitemap
   .add('https://example.com/about', {
     lastmod: new Date(),
     changefreq: 'monthly',
-    priority: 0.8
+    priority: 0.8,
   })
   .add('https://example.com/products', {
     lastmod: '2023-12-01',
     changefreq: 'weekly',
     priority: 0.9,
-    images: [{
-      url: 'https://example.com/images/product.jpg',
-      caption: 'Our amazing product'
-    }]
+    images: [
+      {
+        url: 'https://example.com/images/product.jpg',
+        caption: 'Our amazing product',
+      },
+    ],
   });
 
 // Generate XML
@@ -106,7 +108,7 @@ import { Sitemap, SitemapItem } from '@rumenx/sitemap';
 const sitemap = new Sitemap({
   baseUrl: 'https://example.com',
   validate: true,
-  escapeContent: true
+  escapeContent: true,
 });
 
 // Add a page with images and videos
@@ -121,8 +123,8 @@ const richMediaItem: SitemapItem = {
       caption: 'Hero image for amazing post',
       title: 'Amazing Post Hero',
       license: 'https://creativecommons.org/licenses/by/4.0/',
-      geoLocation: 'New York, NY'
-    }
+      geoLocation: 'New York, NY',
+    },
   ],
   videos: [
     {
@@ -135,9 +137,9 @@ const richMediaItem: SitemapItem = {
       view_count: 10000,
       publication_date: '2023-12-01',
       family_friendly: true,
-      tags: ['tutorial', 'amazing', 'guide']
-    }
-  ]
+      tags: ['tutorial', 'amazing', 'guide'],
+    },
+  ],
 };
 
 sitemap.addItem(richMediaItem);
@@ -152,8 +154,8 @@ sitemap.add('https://example.com/en/about', {
     { language: 'en', url: 'https://example.com/en/about' },
     { language: 'es', url: 'https://example.com/es/acerca-de' },
     { language: 'fr', url: 'https://example.com/fr/a-propos' },
-    { language: 'de', url: 'https://example.com/de/uber-uns' }
-  ]
+    { language: 'de', url: 'https://example.com/de/uber-uns' },
+  ],
 });
 ```
 
@@ -166,8 +168,8 @@ sitemap.add('https://example.com/news/breaking-news', {
     language: 'en',
     publication_date: new Date(),
     title: 'Breaking: Amazing Discovery Made',
-    keywords: 'breaking, news, discovery, science'
-  }
+    keywords: 'breaking, news, discovery, science',
+  },
 });
 ```
 
@@ -178,12 +180,12 @@ sitemap.add('https://example.com/article', {
   alternates: [
     {
       url: 'https://m.example.com/article',
-      media: 'only screen and (max-width: 640px)'
+      media: 'only screen and (max-width: 640px)',
     },
     {
-      url: 'https://amp.example.com/article'
-    }
-  ]
+      url: 'https://amp.example.com/article',
+    },
+  ],
 });
 ```
 
@@ -193,13 +195,13 @@ sitemap.add('https://example.com/article', {
 import { SitemapIndex } from '@rumenx/sitemap';
 
 const sitemapIndex = new SitemapIndex({
-  baseUrl: 'https://example.com'
+  baseUrl: 'https://example.com',
 });
 
 // Add multiple sitemaps
 sitemapIndex
   .addSitemap('https://example.com/sitemap-posts.xml', {
-    lastmod: new Date()
+    lastmod: new Date(),
   })
   .addSitemap('https://example.com/sitemap-pages.xml')
   .addSitemap('https://example.com/sitemap-products.xml');
@@ -243,7 +245,7 @@ const sitemap = new Sitemap({
   prettyPrint: true,
   stylesheet: '/sitemap.xsl',
   maxItems: 50000,
-  allowedDomains: ['example.com', 'cdn.example.com']
+  allowedDomains: ['example.com', 'cdn.example.com'],
 });
 ```
 
@@ -283,7 +285,7 @@ if (errors.length > 0) {
 
 // Handle validation in configuration
 const sitemap = new Sitemap({
-  validate: true // Throws errors on invalid data
+  validate: true, // Throws errors on invalid data
 });
 
 try {
@@ -300,7 +302,7 @@ try {
 ```typescript
 const xml = sitemap.toXML({
   prettyPrint: true,
-  escapeContent: true
+  escapeContent: true,
 });
 ```
 
@@ -327,10 +329,7 @@ const xml = sitemap.render('xml', { prettyPrint: false });
 
 ```typescript
 // Remove items based on conditions
-sitemap.removeItems(item => 
-  item.priority < 0.5 || 
-  new Date(item.lastmod) < new Date('2023-01-01')
-);
+sitemap.removeItems(item => item.priority < 0.5 || new Date(item.lastmod) < new Date('2023-01-01'));
 
 // Get specific items
 const items = sitemap.getItems();
@@ -351,12 +350,12 @@ const count = sitemap.getItemCount();
 
 ```typescript
 const sitemap = new Sitemap({
-  baseUrl: 'https://example.com'
+  baseUrl: 'https://example.com',
 });
 
 // Relative URLs are automatically resolved
 sitemap.add('/products'); // Becomes https://example.com/products
-sitemap.add('about');     // Becomes https://example.com/about
+sitemap.add('about'); // Becomes https://example.com/about
 ```
 
 ## 🧪 TypeScript Support
@@ -364,14 +363,14 @@ sitemap.add('about');     // Becomes https://example.com/about
 This package is written in TypeScript and provides complete type definitions:
 
 ```typescript
-import { 
-  Sitemap, 
-  SitemapIndex, 
+import {
+  Sitemap,
+  SitemapIndex,
   SitemapItem,
   SitemapIndexItem,
   SitemapConfig,
   SitemapStats,
-  ValidationError
+  ValidationError,
 } from '@rumenx/sitemap';
 
 // Full IntelliSense support
@@ -380,8 +379,12 @@ const item: SitemapItem = {
   lastmod: new Date(),
   changefreq: 'weekly', // TypeScript will suggest valid values
   priority: 0.8,
-  images: [/* Fully typed image objects */],
-  videos: [/* Fully typed video objects */]
+  images: [
+    /* Fully typed image objects */
+  ],
+  videos: [
+    /* Fully typed video objects */
+  ],
 };
 ```
 
@@ -405,10 +408,10 @@ const app = express();
 
 app.get('/sitemap.xml', (req, res) => {
   const sitemap = new Sitemap({ baseUrl: 'https://example.com' });
-  
+
   // Add your URLs
   sitemap.add('/').add('/about').add('/contact');
-  
+
   res.set('Content-Type', 'application/xml');
   res.send(sitemap.toXML());
 });
@@ -423,10 +426,10 @@ import { Sitemap } from '@rumenx/sitemap';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const sitemap = new Sitemap({ baseUrl: 'https://yoursite.com' });
-  
+
   // Add your pages
   sitemap.add('/').add('/about').add('/blog');
-  
+
   res.setHeader('Content-Type', 'application/xml');
   res.status(200).send(sitemap.toXML());
 }
@@ -440,20 +443,20 @@ import { getAllPosts, getAllProducts } from './database';
 
 async function generateSitemap() {
   const sitemap = new Sitemap({ baseUrl: 'https://example.com' });
-  
+
   // Add static pages
   sitemap.add('/').add('/about').add('/contact');
-  
+
   // Add dynamic content
   const posts = await getAllPosts();
   posts.forEach(post => {
     sitemap.add(`/blog/${post.slug}`, {
       lastmod: post.updatedAt,
       changefreq: 'weekly',
-      priority: 0.7
+      priority: 0.7,
     });
   });
-  
+
   const products = await getAllProducts();
   products.forEach(product => {
     sitemap.add(`/products/${product.slug}`, {
@@ -462,11 +465,11 @@ async function generateSitemap() {
       priority: 0.8,
       images: product.images.map(img => ({
         url: img.url,
-        caption: img.alt
-      }))
+        caption: img.alt,
+      })),
     });
   });
-  
+
   return sitemap.toXML();
 }
 ```
@@ -497,9 +500,7 @@ try {
 ```typescript
 // Before (other packages)
 const sitemap = require('sitemap');
-const urls = [
-  { url: '/', changefreq: 'daily', priority: 1.0 }
-];
+const urls = [{ url: '/', changefreq: 'daily', priority: 1.0 }];
 const sm = sitemap.createSitemap({ urls });
 
 // After (@rumenx/sitemap)

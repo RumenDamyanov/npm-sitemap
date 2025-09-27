@@ -1,6 +1,6 @@
 /**
  * Core interfaces for @rumenx/sitemap classes
- * 
+ *
  * This file defines the main interfaces that classes must implement.
  */
 
@@ -23,7 +23,7 @@ import type {
 export interface ISitemap {
   /**
    * Add a single sitemap item using explicit parameters
-   * 
+   *
    * @param url - The URL of the page
    * @param lastmod - Last modification date (optional)
    * @param priority - Priority of this URL (0.0 to 1.0, optional)
@@ -41,7 +41,7 @@ export interface ISitemap {
 
   /**
    * Add one or more sitemap items using object/array data
-   * 
+   *
    * @param items - Single item or array of items to add
    * @returns This sitemap instance for chaining
    */
@@ -49,28 +49,28 @@ export interface ISitemap {
 
   /**
    * Get all sitemap items
-   * 
+   *
    * @returns Array of all sitemap items
    */
   getItems(): SitemapItem[];
 
   /**
    * Get the number of items in the sitemap
-   * 
+   *
    * @returns Number of items
    */
   getItemCount(): number;
 
   /**
    * Clear all items from the sitemap
-   * 
+   *
    * @returns This sitemap instance for chaining
    */
   clear(): this;
 
   /**
    * Remove items that match the given predicate function
-   * 
+   *
    * @param predicate - Function to test each item
    * @returns This sitemap instance for chaining
    */
@@ -78,14 +78,14 @@ export interface ISitemap {
 
   /**
    * Get statistics about the sitemap
-   * 
+   *
    * @returns Statistics object
    */
   getStats(): SitemapStats;
 
   /**
    * Render the sitemap in the specified format
-   * 
+   *
    * @param format - Output format (default: 'xml')
    * @param options - Rendering options
    * @returns Rendered sitemap as string
@@ -94,7 +94,7 @@ export interface ISitemap {
 
   /**
    * Render the sitemap as XML (convenience method)
-   * 
+   *
    * @param options - Rendering options
    * @returns XML string
    */
@@ -102,7 +102,7 @@ export interface ISitemap {
 
   /**
    * Render the sitemap as plain text (convenience method)
-   * 
+   *
    * @param options - Rendering options
    * @returns Text string with URLs
    */
@@ -110,7 +110,7 @@ export interface ISitemap {
 
   /**
    * Render the sitemap as HTML (convenience method)
-   * 
+   *
    * @param options - Rendering options
    * @returns HTML string
    */
@@ -118,14 +118,14 @@ export interface ISitemap {
 
   /**
    * Validate all items in the sitemap
-   * 
+   *
    * @returns Array of validation errors (empty if valid)
    */
   validate(): import('../types').ValidationError[];
 
   /**
    * Check if the sitemap has reached the maximum recommended size
-   * 
+   *
    * @returns True if sitemap should be split
    */
   shouldSplit(): boolean;
@@ -137,7 +137,7 @@ export interface ISitemap {
 export interface ISitemapIndex {
   /**
    * Add a sitemap reference to the index
-   * 
+   *
    * @param url - URL of the sitemap file
    * @param lastmod - Last modification date (optional)
    * @returns This index instance for chaining
@@ -146,7 +146,7 @@ export interface ISitemapIndex {
 
   /**
    * Add multiple sitemap references to the index
-   * 
+   *
    * @param sitemaps - Array of sitemap index items
    * @returns This index instance for chaining
    */
@@ -154,28 +154,28 @@ export interface ISitemapIndex {
 
   /**
    * Get all sitemap references
-   * 
+   *
    * @returns Array of all sitemap index items
    */
   getSitemaps(): SitemapIndexItem[];
 
   /**
    * Get the number of sitemaps in the index
-   * 
+   *
    * @returns Number of sitemap references
    */
   getSitemapCount(): number;
 
   /**
    * Clear all sitemap references from the index
-   * 
+   *
    * @returns This index instance for chaining
    */
   clear(): this;
 
   /**
    * Reset the index with new sitemap references
-   * 
+   *
    * @param sitemaps - New array of sitemap index items
    * @returns This index instance for chaining
    */
@@ -183,7 +183,7 @@ export interface ISitemapIndex {
 
   /**
    * Render the sitemap index as XML
-   * 
+   *
    * @param options - Rendering options
    * @returns XML string
    */
@@ -191,7 +191,7 @@ export interface ISitemapIndex {
 
   /**
    * Validate all sitemap references in the index
-   * 
+   *
    * @returns Array of validation errors (empty if valid)
    */
   validate(): import('../types').ValidationError[];
@@ -203,14 +203,14 @@ export interface ISitemapIndex {
 export interface IModel {
   /**
    * Add a sitemap item to the internal storage
-   * 
+   *
    * @param item - The sitemap item to add
    */
   addItem(item: SitemapItem): void;
 
   /**
    * Get all stored sitemap items
-   * 
+   *
    * @returns Array of sitemap items
    */
   getItems(): SitemapItem[];
@@ -222,35 +222,35 @@ export interface IModel {
 
   /**
    * Get the configuration
-   * 
+   *
    * @returns Configuration object
    */
   getConfig(): SitemapConfig;
 
   /**
    * Check if escaping is enabled
-   * 
+   *
    * @returns True if escaping is enabled
    */
   getEscaping(): boolean;
 
   /**
    * Add a sitemap index item
-   * 
+   *
    * @param sitemap - The sitemap index item to add
    */
   addSitemap(sitemap: SitemapIndexItem): void;
 
   /**
    * Get all stored sitemap index items
-   * 
+   *
    * @returns Array of sitemap index items
    */
   getSitemaps(): SitemapIndexItem[];
 
   /**
    * Reset sitemap index items
-   * 
+   *
    * @param sitemaps - New array of sitemap index items
    */
   resetSitemaps(sitemaps: SitemapIndexItem[]): void;
@@ -262,7 +262,7 @@ export interface IModel {
 export interface IRendererFactory {
   /**
    * Get a renderer for the specified format
-   * 
+   *
    * @param format - The output format
    * @returns Renderer instance
    */
@@ -270,7 +270,7 @@ export interface IRendererFactory {
 
   /**
    * Register a custom renderer
-   * 
+   *
    * @param format - The format this renderer handles
    * @param renderer - The renderer instance
    */
@@ -278,7 +278,7 @@ export interface IRendererFactory {
 
   /**
    * Check if a renderer is available for the format
-   * 
+   *
    * @param format - The format to check
    * @returns True if renderer is available
    */
@@ -286,7 +286,7 @@ export interface IRendererFactory {
 
   /**
    * Get all supported formats
-   * 
+   *
    * @returns Array of supported format names
    */
   getSupportedFormats(): SitemapFormat[];
@@ -298,7 +298,7 @@ export interface IRendererFactory {
 export interface IValidator {
   /**
    * Validate a URL
-   * 
+   *
    * @param url - URL to validate
    * @returns True if valid
    */
@@ -306,7 +306,7 @@ export interface IValidator {
 
   /**
    * Validate a priority value
-   * 
+   *
    * @param priority - Priority to validate
    * @returns True if valid
    */
@@ -314,7 +314,7 @@ export interface IValidator {
 
   /**
    * Validate a date
-   * 
+   *
    * @param date - Date to validate
    * @returns True if valid
    */
@@ -322,7 +322,7 @@ export interface IValidator {
 
   /**
    * Validate a complete sitemap item
-   * 
+   *
    * @param item - Item to validate
    * @returns Array of validation errors
    */
@@ -330,7 +330,7 @@ export interface IValidator {
 
   /**
    * Validate a sitemap index item
-   * 
+   *
    * @param item - Index item to validate
    * @returns Array of validation errors
    */

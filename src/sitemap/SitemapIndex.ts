@@ -1,6 +1,6 @@
 /**
  * SitemapIndex class for managing multiple sitemaps
- * 
+ *
  * When you have a large number of URLs, it's recommended to split them into
  * multiple sitemap files and create a sitemap index that references them.
  */
@@ -39,7 +39,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Create a new SitemapIndex instance
-   * 
+   *
    * @param config - Optional configuration object
    */
   constructor(config: SitemapIndexConfig = {}) {
@@ -49,7 +49,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Add a sitemap to the index
-   * 
+   *
    * @param loc - URL of the sitemap file
    * @param lastmod - Last modification date (optional)
    * @returns This sitemap index instance for chaining
@@ -89,7 +89,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Add multiple sitemaps to the index
-   * 
+   *
    * @param items - Array of sitemap items to add
    * @returns This sitemap index instance for chaining
    */
@@ -102,7 +102,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Get all sitemap items in the index
-   * 
+   *
    * @returns Array of all sitemap items
    */
   getSitemaps(): SitemapIndexItem[] {
@@ -111,7 +111,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Get the number of sitemaps in the index
-   * 
+   *
    * @returns Number of sitemaps
    */
   getSitemapCount(): number {
@@ -120,7 +120,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Clear all sitemaps from the index
-   * 
+   *
    * @returns This sitemap index instance for chaining
    */
   clear(): this {
@@ -130,7 +130,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Remove sitemaps that match the given predicate function
-   * 
+   *
    * @param predicate - Function to test each sitemap item
    * @returns This sitemap index instance for chaining
    */
@@ -141,7 +141,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Reset the index with new sitemap references
-   * 
+   *
    * @param sitemaps - New array of sitemap index items
    * @returns This sitemap index instance for chaining
    */
@@ -153,7 +153,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Check if a sitemap URL exists in the index
-   * 
+   *
    * @param url - URL to check
    * @returns True if the sitemap exists
    */
@@ -164,7 +164,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Get statistics about the sitemap index
-   * 
+   *
    * @returns Statistics object
    */
   getStats(): SitemapStats {
@@ -194,7 +194,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Render the sitemap index as XML
-   * 
+   *
    * @param options - Rendering options
    * @returns XML string
    */
@@ -204,7 +204,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Render the sitemap index as XML
-   * 
+   *
    * @param options - Rendering options
    * @returns XML string
    */
@@ -212,48 +212,50 @@ export class SitemapIndex implements ISitemapIndex {
     // Merge options with config
     const pretty = options.pretty ?? this.config.pretty;
     const stylesheet = options.stylesheet ?? this.config.stylesheet;
-    
+
     // Generate XML
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    
+
     if (stylesheet) {
       xml += `<?xml-stylesheet href="${this.escapeXml(stylesheet)}" type="text/xsl"?>\n`;
     }
-    
+
     xml += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-    
+
     // Add sitemap items
     for (const item of this.items) {
       xml += this.renderSitemapIndexItem(item, pretty ? 1 : 0);
     }
-    
+
     xml += '</sitemapindex>';
-    
+
     return xml;
   }
 
   /**
    * Validate all sitemap items in the index
-   * 
+   *
    * @returns Array of validation errors (empty if valid)
    */
   validate(): ValidationError[] {
     const errors: ValidationError[] = [];
-    
+
     this.items.forEach((item, index) => {
       const itemErrors = this.validateSitemapItem(item);
-      errors.push(...itemErrors.map(error => ({
-        ...error,
-        field: `sitemap[${index}].${error.field}`,
-      })));
+      errors.push(
+        ...itemErrors.map(error => ({
+          ...error,
+          field: `sitemap[${index}].${error.field}`,
+        }))
+      );
     });
-    
+
     return errors;
   }
 
   /**
    * Check if the sitemap index has reached the maximum recommended size
-   * 
+   *
    * @returns True if index should be split (though this is rarely needed)
    */
   shouldSplit(): boolean {
@@ -262,7 +264,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Get the current configuration
-   * 
+   *
    * @returns Current configuration object
    */
   getConfig(): SitemapIndexConfig {
@@ -271,7 +273,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Update the configuration
-   * 
+   *
    * @param config - Configuration updates
    * @returns This sitemap index instance for chaining
    */
@@ -282,7 +284,7 @@ export class SitemapIndex implements ISitemapIndex {
 
   /**
    * Render a single sitemap index item as XML
-   * 
+   *
    * @param item - Sitemap index item to render
    * @param indent - Indentation level
    * @returns XML string for the item
@@ -290,28 +292,28 @@ export class SitemapIndex implements ISitemapIndex {
   private renderSitemapIndexItem(item: SitemapIndexItem, indent = 0): string {
     const indentStr = '  '.repeat(indent);
     let xml = `${indentStr}<sitemap>\n`;
-    
+
     // Required URL
     xml += `${indentStr}  <loc>${this.escapeXml(item.loc)}</loc>\n`;
-    
+
     // Optional last modification date
     if (item.lastmod) {
       xml += `${indentStr}  <lastmod>${item.lastmod}</lastmod>\n`;
     }
-    
+
     xml += `${indentStr}</sitemap>\n`;
     return xml;
   }
 
   /**
    * Validate a single sitemap index item
-   * 
+   *
    * @param item - Item to validate
    * @returns Array of validation errors
    */
   private validateSitemapItem(item: SitemapIndexItem): ValidationError[] {
     const errors: ValidationError[] = [];
-    
+
     // Validate URL
     if (!this.validator.isValidUrl(item.loc)) {
       errors.push({
@@ -321,7 +323,7 @@ export class SitemapIndex implements ISitemapIndex {
         value: item.loc,
       });
     }
-    
+
     // Validate lastmod if present
     if (item.lastmod && typeof item.lastmod === 'string') {
       try {
@@ -343,13 +345,13 @@ export class SitemapIndex implements ISitemapIndex {
         });
       }
     }
-    
+
     return errors;
   }
 
   /**
    * Escape XML special characters
-   * 
+   *
    * @param text - Text to escape
    * @returns Escaped text
    */
@@ -357,7 +359,7 @@ export class SitemapIndex implements ISitemapIndex {
     if (!this.config.escaping) {
       return text;
     }
-    
+
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
