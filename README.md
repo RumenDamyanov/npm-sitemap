@@ -2,12 +2,11 @@
 
 ## 💡 Multi-Language Sitemap Familycenter
 
-[![npm version](https://badge.fury.io/js/@rumenx%2Fsitemap.svg)](https://badge.fury.io/js/@rumenx%2Fsitemap)
-[![Node.js CI](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml)
+[![CI](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions)
+[![CodeQL](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/github-code-scanning/codeql)
+[![Dependabot](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/dependabot/dependabot-updates)
 [![codecov](https://codecov.io/gh/RumenDamyanov/npm-sitemap/branch/master/graph/badge.svg)](https://codecov.io/gh/RumenDamyanov/npm-sitemap)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4.2-blue.svg)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Downloads](https://img.shields.io/npm/dm/@rumenx/sitemap.svg)](https://www.npmjs.com/package/@rumenx/sitemap)
+[![npm version](https://img.shields.io/npm/v/@rumenx/sitemap.svg)](https://www.npmjs.com/package/@rumenx/sitemap)
 
 **A comprehensive TypeScript package for generating XML sitemaps in Node.js applications**
 

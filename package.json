@@ -1,6 +1,6 @@
 {
   "name": "@rumenx/sitemap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A comprehensive TypeScript package for generating XML sitemaps in Node.js applications with support for images, videos, translations, and Google News",
   "keywords": [
     "sitemap",
@@ -26,6 +26,10 @@
   },
   "license": "MIT",
   "author": "Rumen Damyanov <contact@rumenx.com>",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/RumenDamyanov"
+  },
   "type": "module",
   "exports": {
     ".": {
