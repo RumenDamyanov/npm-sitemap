@@ -1,7 +1,5 @@
 # @rumenx/sitemap
 
-## 💡 Multi-Language Sitemap Familycenter
-
 [![CI](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/ci.yml/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions)
 [![CodeQL](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/github-code-scanning/codeql)
 [![Dependabot](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/RumenDamyanov/npm-sitemap/actions/workflows/dependabot/dependabot-updates)
