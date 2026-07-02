@@ -376,12 +376,8 @@ const item: SitemapItem = {
   lastmod: new Date(),
   changefreq: 'weekly', // TypeScript will suggest valid values
   priority: 0.8,
-  images: [
-    /* Fully typed image objects */
-  ],
-  videos: [
-    /* Fully typed video objects */
-  ],
+  images: [/* Fully typed image objects */],
+  videos: [/* Fully typed video objects */],
 };
 ```
 

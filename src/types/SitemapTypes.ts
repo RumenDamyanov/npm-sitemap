@@ -9,13 +9,7 @@
  * Valid change frequency values as defined by sitemaps.org protocol
  */
 export type ChangeFrequency =
-  | 'always'
-  | 'hourly'
-  | 'daily'
-  | 'weekly'
-  | 'monthly'
-  | 'yearly'
-  | 'never';
+  'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
 
 /**
  * Supported output formats for sitemap rendering
