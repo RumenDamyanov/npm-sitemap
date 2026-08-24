@@ -444,11 +444,17 @@ export class Sitemap implements ISitemap {
       xml += `${indentStr}  <news:news>\n`;
       xml += `${indentStr}    <news:publication>\n`;
       xml += `${indentStr}      <news:name>${this.escapeXml(item.googlenews.sitename)}</news:name>\n`;
-      xml += `${indentStr}      <news:language>${item.googlenews.language}</news:language>\n`;
+      xml += `${indentStr}      <news:language>${this.escapeXml(item.googlenews.language)}</news:language>\n`;
       xml += `${indentStr}    </news:publication>\n`;
-      xml += `${indentStr}    <news:publication_date>${this.formatDate(item.googlenews.publication_date)}</news:publication_date>\n`;
+      xml += `${indentStr}    <news:publication_date>${this.escapeXml(this.formatDate(item.googlenews.publication_date))}</news:publication_date>\n`;
       if (item.googlenews.title) {
         xml += `${indentStr}    <news:title>${this.escapeXml(item.googlenews.title)}</news:title>\n`;
+      }
+      if (item.googlenews.keywords) {
+        xml += `${indentStr}    <news:keywords>${this.escapeXml(item.googlenews.keywords)}</news:keywords>\n`;
+      }
+      if (item.googlenews.stock_tickers) {
+        xml += `${indentStr}    <news:stock_tickers>${this.escapeXml(item.googlenews.stock_tickers)}</news:stock_tickers>\n`;
       }
       xml += `${indentStr}  </news:news>\n`;
     }
