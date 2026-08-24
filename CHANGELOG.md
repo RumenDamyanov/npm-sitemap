@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-08-24
+
+### Security
+
+- Escape Google News `language` and `publication_date` when rendering XML, matching the php-sitemap fix for [GHSA-3j73-g385-2pc5](https://github.com/RumenDamyanov/php-sitemap/security/advisories/GHSA-3j73-g385-2pc5).
+- Escape `keywords` and `stock_tickers` and include them in Google News output so those typed fields cannot be echoed raw later.
+
+### Fixed
+
+- Google News sitemap items now emit `news:keywords` and `news:stock_tickers` when provided.
+
 ### Added
 
 - Initial implementation of comprehensive TypeScript sitemap package
@@ -53,5 +64,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NPM publishing workflow
 - Codecov integration for coverage reporting
 
-[unreleased]: https://github.com/RumenDamyanov/npm-sitemap/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/RumenDamyanov/npm-sitemap/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/RumenDamyanov/npm-sitemap/releases/tag/v1.0.3
 [1.0.0]: https://github.com/RumenDamyanov/npm-sitemap/releases/tag/v1.0.0

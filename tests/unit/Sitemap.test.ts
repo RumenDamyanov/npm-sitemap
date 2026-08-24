@@ -540,6 +540,37 @@ describe('Sitemap', () => {
       expect(xml).toContain('&#39;');
     });
 
+    it('should escape XML injection in Google News language, date, keywords, and stock_tickers', () => {
+      const noValidationSitemap = new Sitemap({ validate: false });
+      noValidationSitemap.addItem({
+        loc: 'https://news.example/art1',
+        googlenews: {
+          sitename: 'The Example News',
+          language: 'en</news:language><evil lang="1"/>',
+          publication_date: '2025-01-01</news:publication_date><evil date="1"/>',
+          title: 'Breaking',
+          keywords: 'kw</news:keywords><evil k="1"/>',
+          stock_tickers: 'ST</news:stock_tickers><evil st="1"/>',
+        },
+      });
+
+      const xml = noValidationSitemap.toXML();
+
+      expect(xml).not.toContain('<evil');
+      expect(xml).toContain(
+        '<news:language>en&lt;/news:language&gt;&lt;evil lang=&quot;1&quot;/&gt;</news:language>'
+      );
+      expect(xml).toContain(
+        '<news:publication_date>2025-01-01&lt;/news:publication_date&gt;&lt;evil date=&quot;1&quot;/&gt;</news:publication_date>'
+      );
+      expect(xml).toContain(
+        '<news:keywords>kw&lt;/news:keywords&gt;&lt;evil k=&quot;1&quot;/&gt;</news:keywords>'
+      );
+      expect(xml).toContain(
+        '<news:stock_tickers>ST&lt;/news:stock_tickers&gt;&lt;evil st=&quot;1&quot;/&gt;</news:stock_tickers>'
+      );
+    });
+
     it('should not escape when escaping is disabled', () => {
       const noEscapeSitemap = new Sitemap({ escaping: false });
       const item: SitemapItem = {
