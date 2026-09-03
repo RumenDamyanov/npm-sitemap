@@ -34,7 +34,7 @@ describe('Package Exports', () => {
 
   describe('package metadata', () => {
     it('should export package version', () => {
-      expect(SitemapPackage.version).toBe('1.0.0');
+      expect(SitemapPackage.version).toBe('1.0.4');
       expect(typeof SitemapPackage.version).toBe('string');
     });
 
@@ -47,7 +47,7 @@ describe('Package Exports', () => {
       expect(SitemapPackage.packageInfo).toBeDefined();
       expect(typeof SitemapPackage.packageInfo).toBe('object');
       expect(SitemapPackage.packageInfo.name).toBe('@rumenx/sitemap');
-      expect(SitemapPackage.packageInfo.version).toBe('1.0.0');
+      expect(SitemapPackage.packageInfo.version).toBe('1.0.4');
     });
 
     it('should freeze package info object', () => {

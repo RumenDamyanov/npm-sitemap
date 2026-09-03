@@ -43,7 +43,7 @@ export { isValidUrl, normalizeUrl, resolveUrl } from './validators/UrlValidator.
 export { DataValidator } from './validators/DataValidator.js';
 
 // Package metadata
-export const version = '1.0.0';
+export const version = '1.0.4';
 export const name = '@rumenx/sitemap';
 
 /**

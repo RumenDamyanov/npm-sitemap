@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-09-03
+
+### Security
+
+- Upgrade `browserslist` to `4.28.8` to address unbounded memory growth and untrusted stats crash ([GHSA-c83g-rgw3-j3cx](https://github.com/advisories/GHSA-c83g-rgw3-j3cx), [GHSA-73wf-gq98-2v4g](https://github.com/advisories/GHSA-73wf-gq98-2v4g)).
+- Upgrade `js-yaml` to `4.3.2` (and nested `3.15.2`) to address quadratic CPU consumption in `!!omap` resolution ([CVE-2026-59870](https://github.com/advisories/GHSA-5p4m-2wfm-xmqj)).
+
 ## [1.0.3] - 2026-08-24
 
 ### Security
@@ -64,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NPM publishing workflow
 - Codecov integration for coverage reporting
 
-[unreleased]: https://github.com/RumenDamyanov/npm-sitemap/compare/v1.0.3...HEAD
+[unreleased]: https://github.com/RumenDamyanov/npm-sitemap/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/RumenDamyanov/npm-sitemap/releases/tag/v1.0.4
 [1.0.3]: https://github.com/RumenDamyanov/npm-sitemap/releases/tag/v1.0.3
 [1.0.0]: https://github.com/RumenDamyanov/npm-sitemap/releases/tag/v1.0.0
