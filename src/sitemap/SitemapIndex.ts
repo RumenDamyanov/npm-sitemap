@@ -14,6 +14,7 @@ import type {
 } from '../types/SitemapTypes.js';
 import type { ISitemapIndex } from '../interfaces/index.js';
 import { formatDate } from '../utils/DateUtils.js';
+import { escapeXml as escapeXmlText, stripIllegalXmlChars } from '../utils/XmlUtils.js';
 import { normalizeUrl, resolveUrl } from '../validators/UrlValidator.js';
 import { DataValidator } from '../validators/DataValidator.js';
 
@@ -217,7 +218,7 @@ export class SitemapIndex implements ISitemapIndex {
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 
     if (stylesheet) {
-      xml += `<?xml-stylesheet href="${this.escapeXml(stylesheet)}" type="text/xsl"?>\n`;
+      xml += `<?xml-stylesheet href="${escapeXmlText(stylesheet)}" type="text/xsl"?>\n`;
     }
 
     xml += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
@@ -298,7 +299,8 @@ export class SitemapIndex implements ISitemapIndex {
 
     // Optional last modification date
     if (item.lastmod) {
-      xml += `${indentStr}  <lastmod>${item.lastmod}</lastmod>\n`;
+      const lastmod = item.lastmod instanceof Date ? formatDate(item.lastmod) : item.lastmod;
+      xml += `${indentStr}  <lastmod>${escapeXmlText(lastmod)}</lastmod>\n`;
     }
 
     xml += `${indentStr}</sitemap>\n`;
@@ -357,14 +359,9 @@ export class SitemapIndex implements ISitemapIndex {
    */
   private escapeXml(text: string): string {
     if (!this.config.escaping) {
-      return text;
+      return stripIllegalXmlChars(text);
     }
 
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return escapeXmlText(text);
   }
 }

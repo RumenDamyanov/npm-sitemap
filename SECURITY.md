@@ -6,8 +6,11 @@ We actively support the following versions of @rumenx/sitemap with security upda
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
+| 1.1.x   | :white_check_mark: |
+| 1.0.x   | :x:                |
 | < 1.0   | :x:                |
+
+1.1.x requires Node.js **22.23.4+**, **24.22.1+**, or **26.12.1+**. Node.js 18 and 20 are end of life and do not receive the October 2026 Brotli decoder fix ([CVE-2026-111497](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases)). This package does not decompress Brotli itself. The runtime that installs and runs it still has to be a patched release.
 
 ## Reporting a Vulnerability
 

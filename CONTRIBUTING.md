@@ -31,7 +31,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
+- Node.js 22.23.4+, 24.22.1+, or 26.12.1+
 - npm or yarn package manager
 - Git
 
@@ -241,7 +241,7 @@ When requesting features, please include:
 
 ### Compatibility
 
-- Maintain Node.js >= 18.0.0 compatibility
+- Maintain compatibility with Node.js 22.23.4+, 24.22.1+, and 26.12.1+
 - Ensure TypeScript compatibility
 - Support both ESM and CJS module systems
 
