@@ -479,5 +479,12 @@ describe('XmlUtils', () => {
       expect(stylesheet).toMatch(/^\<\?xml-stylesheet/);
       expect(stylesheet).toMatch(/\?\>$/);
     });
+
+    it('strips illegal characters and rejects names that change the markup', () => {
+      expect(escapeXml('a\u0000b')).toBe('ab');
+      expect(() => xmlDeclaration('1.0"?><x')).toThrow(/not allowed/);
+      expect(() => createElement('ok', 'x', { 'a"b': 'c' })).toThrow(/attribute name/);
+      expect(() => createNamespaceDeclarations({ 'a>b': 'urn:example' })).toThrow(/namespace/);
+    });
   });
 });

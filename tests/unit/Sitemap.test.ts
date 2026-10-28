@@ -663,5 +663,29 @@ describe('Sitemap', () => {
         sitemap.addItem(item);
       }).toThrow('Validation failed');
     });
+
+    it('does not let video text or link attributes close the markup', () => {
+      const loose = new Sitemap({ validate: false });
+      loose.addItem({
+        loc: 'https://example.com/a',
+        changefreq: 'daily</changefreq><x' as SitemapItem['changefreq'],
+        videos: [
+          {
+            thumbnail_url: 'https://example.com/t.jpg',
+            title: 'a]]>b',
+            description: 'c]]>d',
+          },
+        ],
+        translations: [{ language: 'en" onclick="alert(1)', url: 'https://example.com/es' }],
+        alternates: [{ media: 'screen" onclick="alert(1)', url: 'https://example.com/m' }],
+      });
+      const xml = loose.toXML();
+
+      expect(xml).toContain('<video:title><![CDATA[a]]&gt;b]]></video:title>');
+      expect(xml).toContain('<video:description><![CDATA[c]]&gt;d]]></video:description>');
+      expect(xml).toContain('hreflang="en&quot; onclick=&quot;alert(1)"');
+      expect(xml).toContain('media="screen&quot; onclick=&quot;alert(1)"');
+      expect(xml).toContain('&lt;/changefreq&gt;');
+    });
   });
 });

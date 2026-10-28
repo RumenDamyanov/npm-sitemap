@@ -4,6 +4,16 @@
  * This module provides utilities for XML generation, escaping, and formatting.
  */
 
+const illegalXmlChars = /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g;
+const xmlName = /^[A-Za-z_][A-Za-z0-9:._-]*$/;
+
+/**
+ * Remove characters that XML 1.0 forbids in text.
+ */
+export function stripIllegalXmlChars(text: string): string {
+  return text.replace(illegalXmlChars, '');
+}
+
 /**
  * Escape special XML characters in text content
  *
@@ -11,12 +21,21 @@
  * @returns Escaped text safe for XML
  */
 export function escapeXml(text: string): string {
-  return text
+  return stripIllegalXmlChars(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+/**
+ * Reject names that would change the shape of an XML attribute or namespace.
+ */
+export function assertXmlName(name: string, kind = 'name'): void {
+  if (!xmlName.test(name)) {
+    throw new Error(`Invalid XML ${kind}: ${name}`);
+  }
 }
 
 /**
@@ -43,6 +62,9 @@ export function wrapCDATA(text: string): string {
  * @returns XML declaration string
  */
 export function xmlDeclaration(version = '1.0', encoding = 'UTF-8'): string {
+  if (!/^[0-9]+\.[0-9]+$/.test(version) || !/^[A-Za-z][A-Za-z0-9._-]*$/.test(encoding)) {
+    throw new Error('The XML declaration contains characters that are not allowed');
+  }
   return `<?xml version="${version}" encoding="${encoding}"?>`;
 }
 
@@ -54,7 +76,7 @@ export function xmlDeclaration(version = '1.0', encoding = 'UTF-8'): string {
  * @returns Stylesheet processing instruction
  */
 export function xmlStylesheet(href: string, type = 'text/xsl'): string {
-  return `<?xml-stylesheet href="${escapeXml(href)}" type="${type}"?>`;
+  return `<?xml-stylesheet href="${escapeXml(href)}" type="${escapeXml(type)}"?>`;
 }
 
 /**
@@ -75,7 +97,10 @@ export function createElement(
   const indentStr = '  '.repeat(indent);
   const attrStr = attributes
     ? Object.entries(attributes)
-        .map(([key, value]) => ` ${key}="${escapeXml(value)}"`)
+        .map(([key, value]) => {
+          assertXmlName(key, 'attribute name');
+          return ` ${key}="${escapeXml(value)}"`;
+        })
         .join('')
     : '';
 
@@ -105,7 +130,10 @@ export function createElementWithChildren(
   const indentStr = '  '.repeat(indent);
   const attrStr = attributes
     ? Object.entries(attributes)
-        .map(([key, value]) => ` ${key}="${escapeXml(value)}"`)
+        .map(([key, value]) => {
+          assertXmlName(key, 'attribute name');
+          return ` ${key}="${escapeXml(value)}"`;
+        })
         .join('')
     : '';
 
@@ -165,6 +193,9 @@ export function formatXml(xml: string, indent = '  '): string {
 export function createNamespaceDeclarations(namespaces: Record<string, string>): string {
   return Object.entries(namespaces)
     .map(([prefix, uri]) => {
+      if (prefix !== 'default' && prefix !== 'sitemap') {
+        assertXmlName(prefix, 'namespace prefix');
+      }
       const nsPrefix = prefix === 'default' || prefix === 'sitemap' ? 'xmlns' : `xmlns:${prefix}`;
       return ` ${nsPrefix}="${escapeXml(uri)}"`;
     })

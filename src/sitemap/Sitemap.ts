@@ -20,6 +20,7 @@ import type { ISitemap } from '../interfaces/index.js';
 import { Model } from './Model.js';
 import { DataValidator } from '../validators/DataValidator.js';
 import { formatDate } from '../utils/DateUtils.js';
+import { escapeXml as escapeXmlText, stripIllegalXmlChars } from '../utils/XmlUtils.js';
 import { normalizeUrl, resolveUrl } from '../validators/UrlValidator.js';
 
 /**
@@ -279,7 +280,7 @@ export class Sitemap implements ISitemap {
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 
     if (stylesheet) {
-      xml += `<?xml-stylesheet href="${this.escapeXml(stylesheet)}" type="text/xsl"?>\n`;
+      xml += `<?xml-stylesheet href="${escapeXmlText(stylesheet)}" type="text/xsl"?>\n`;
     }
 
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
@@ -382,15 +383,16 @@ export class Sitemap implements ISitemap {
 
     // Optional fields
     if (item.lastmod) {
-      xml += `${indentStr}  <lastmod>${item.lastmod}</lastmod>\n`;
+      const lastmod = item.lastmod instanceof Date ? formatDate(item.lastmod) : item.lastmod;
+      xml += `${indentStr}  <lastmod>${escapeXmlText(lastmod)}</lastmod>\n`;
     }
 
     if (item.changefreq) {
-      xml += `${indentStr}  <changefreq>${item.changefreq}</changefreq>\n`;
+      xml += `${indentStr}  <changefreq>${escapeXmlText(item.changefreq)}</changefreq>\n`;
     }
 
     if (item.priority !== undefined) {
-      xml += `${indentStr}  <priority>${item.priority}</priority>\n`;
+      xml += `${indentStr}  <priority>${escapeXmlText(String(item.priority))}</priority>\n`;
     }
 
     // Images
@@ -413,8 +415,8 @@ export class Sitemap implements ISitemap {
       for (const video of item.videos) {
         xml += `${indentStr}  <video:video>\n`;
         xml += `${indentStr}    <video:thumbnail_loc>${this.escapeXml(video.thumbnail_url)}</video:thumbnail_loc>\n`;
-        xml += `${indentStr}    <video:title><![CDATA[${video.title}]]></video:title>\n`;
-        xml += `${indentStr}    <video:description><![CDATA[${video.description}]]></video:description>\n`;
+        xml += `${indentStr}    <video:title><![CDATA[${this.cdata(video.title)}]]></video:title>\n`;
+        xml += `${indentStr}    <video:description><![CDATA[${this.cdata(video.description)}]]></video:description>\n`;
 
         if (video.duration !== undefined) {
           xml += `${indentStr}    <video:duration>${video.duration}</video:duration>\n`;
@@ -427,15 +429,15 @@ export class Sitemap implements ISitemap {
     // Translations (hreflang)
     if (item.translations) {
       for (const trans of item.translations) {
-        xml += `${indentStr}  <xhtml:link rel="alternate" hreflang="${trans.language}" href="${this.escapeXml(trans.url)}" />\n`;
+        xml += `${indentStr}  <xhtml:link rel="alternate" hreflang="${escapeXmlText(trans.language)}" href="${escapeXmlText(trans.url)}" />\n`;
       }
     }
 
     // Alternates
     if (item.alternates) {
       for (const alt of item.alternates) {
-        const media = alt.media ? ` media="${alt.media}"` : '';
-        xml += `${indentStr}  <xhtml:link rel="alternate"${media} href="${this.escapeXml(alt.url)}" />\n`;
+        const media = alt.media ? ` media="${escapeXmlText(alt.media)}"` : '';
+        xml += `${indentStr}  <xhtml:link rel="alternate"${media} href="${escapeXmlText(alt.url)}" />\n`;
       }
     }
 
@@ -472,15 +474,14 @@ export class Sitemap implements ISitemap {
   private escapeXml(text: string): string {
     const config = this.model.getConfig();
     if (!config.escaping) {
-      return text;
+      return stripIllegalXmlChars(text);
     }
 
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return escapeXmlText(text);
+  }
+
+  private cdata(text: string): string {
+    return stripIllegalXmlChars(text).replace(/]]>/g, ']]&gt;');
   }
 
   /**

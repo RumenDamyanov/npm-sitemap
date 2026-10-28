@@ -504,7 +504,7 @@ sm.add('/', { changefreq: 'daily', priority: 1.0 });
 
 ## 📋 Requirements
 
-- **Node.js**: >= 18.0.0
+- **Node.js**: 22.23.4+, 24.22.1+, or 26.12.1+
 - **TypeScript**: >= 4.5.0 (for TypeScript projects)
 
 ## 🤝 Contributing

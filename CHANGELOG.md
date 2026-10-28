@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-28
+
+### Security
+
+- Require Node.js 22.23.4+, 24.22.1+, or 26.12.1+. Node.js 18 and 20 do not receive the October 2026 Brotli decoder fix.
+- Escape `hreflang`, alternate `media`, `changefreq`, `lastmod`, and stylesheet URLs. Split `]]>` inside video CDATA. Reject XML names and declaration values that can change the document shape.
+
 ## [Unreleased]
 
 ## [1.0.4] - 2026-09-03
