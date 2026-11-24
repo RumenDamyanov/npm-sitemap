@@ -69,10 +69,8 @@ jobs:
     - name: Build package
       run: npm run build
 
-    - name: Test package installation
-      run: |
-        cd dist
-        npm pack --dry-run --ignore-scripts
+    - name: Load the packed package
+      run: node scripts/smoke-load.cjs
 
   quality:
     runs-on: ubuntu-latest

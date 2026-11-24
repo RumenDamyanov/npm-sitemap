@@ -2,7 +2,13 @@
  * Tests for the main package exports
  */
 
+import { readFileSync } from 'fs';
+import path from 'path';
 import * as SitemapPackage from '../../src/index.js';
+
+const packageVersion = (
+  JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')) as { version: string }
+).version;
 
 describe('Package Exports', () => {
   describe('main exports', () => {
@@ -34,7 +40,7 @@ describe('Package Exports', () => {
 
   describe('package metadata', () => {
     it('should export package version', () => {
-      expect(SitemapPackage.version).toBe('1.0.4');
+      expect(SitemapPackage.version).toBe(packageVersion);
       expect(typeof SitemapPackage.version).toBe('string');
     });
 
@@ -47,7 +53,7 @@ describe('Package Exports', () => {
       expect(SitemapPackage.packageInfo).toBeDefined();
       expect(typeof SitemapPackage.packageInfo).toBe('object');
       expect(SitemapPackage.packageInfo.name).toBe('@rumenx/sitemap');
-      expect(SitemapPackage.packageInfo.version).toBe('1.0.4');
+      expect(SitemapPackage.packageInfo.version).toBe(packageVersion);
     });
 
     it('should freeze package info object', () => {
